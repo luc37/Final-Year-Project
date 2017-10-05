@@ -1,0 +1,10 @@
+5 to 6 hours.
+created server class
+created server connections class
+created client class
+created client connections class
+
+in the console, clients can now talk to each other via the server
+
+https://www.youtube.com/watch?v=RQ2v0CSV4tY&t=371s
+research link
