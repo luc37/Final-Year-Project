@@ -8,3 +8,6 @@ in the console, clients can now talk to each other via the server
 
 https://www.youtube.com/watch?v=RQ2v0CSV4tY&t=371s
 research link
+
+1 hour
+repair git setup after file move to PP-FYP-Projects
