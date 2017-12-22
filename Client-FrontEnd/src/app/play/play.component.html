@@ -1,0 +1,17 @@
+<pre>connections : {{connection}}</pre>
+
+<div>
+  <input [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
+  <button (click)="sendText()">Insert</button>
+</div>
+
+<div>
+  <textarea rows="8" cols="50" readonly>{{textArea}}</textarea>
+</div>
+
+<div>
+  user: 
+  <input [(ngModel)]="userName">
+</div>
+
+<pre>{{database | json}}</pre>
