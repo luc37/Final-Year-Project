@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as socketIo from 'socket.io-client';
 
 @Component({
@@ -10,7 +10,8 @@ export class PlayComponent implements OnInit {
   connection;
   textArea = '';
   socket;
-  database = 'hello';
+  database = 'database not connected';
+  signedIn = false;
 
   @Input() userName = 'user';
   @Input() inputText;
@@ -20,14 +21,16 @@ export class PlayComponent implements OnInit {
   ngOnInit(): void {
 	  this.socket = socketIo('http://139.59.179.135:3000');
     //this.socket = socketIo('http://localhost:3000');
-
     const ctrl = this;
-    
-    this.connection = 0;
-
+ 
     this.getCountOfUsers();
     this.recieveText();
     this.setUpDatabase();
+
+    this.socket.on('checkSignIn', function(data){
+      ctrl.signedIn = data;
+      console.log(data);
+    });
   }
 
   getCountOfUsers(): void {
@@ -63,7 +66,11 @@ export class PlayComponent implements OnInit {
 
     this.socket.on('db', function(data){
       ctrl.database = data;
-  });
+    });
+  }
+
+  checkSignIn(event): void{
+    this.socket.emit('checkSignIn', event);
   }
 
 }
