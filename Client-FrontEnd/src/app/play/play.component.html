@@ -1,4 +1,2 @@
-<play-screen *ngIf="signedIn" [socket]="socket"></play-screen>
-
+<play-screen *ngIf="signedIn" [socket]="socket" [characterName]="characterName"></play-screen>
 <sign-in *ngIf="!signedIn" (playFunction)="checkSignIn($event)"></sign-in>
-<pre>{{signedIn | json}}</pre>

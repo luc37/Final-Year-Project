@@ -1,0 +1,10 @@
+GAME INTERFACE
+
+<div>
+  <input [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
+  <button (click)="sendText()">Insert</button>
+</div>
+
+<div>
+  <textarea rows="20" cols="100" readonly>{{textArea}}</textarea>
+</div>

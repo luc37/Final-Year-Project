@@ -8,6 +8,8 @@ import { SignInComponent } from './play/sign-in/sign-in.component';
 import { PlayComponent } from './play/play.component';
 import { HomeComponent } from './home/home.component';
 import { PlayScreenComponent } from './play/play-screen/play-screen.component';
+import { GameInterfaceComponent } from './play/play-screen/game-interface/game-interface.component';
+import { GameDetailsComponent } from './play/play-screen/game-details/game-details.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { PlayScreenComponent } from './play/play-screen/play-screen.component';
     SignInComponent,
     PlayComponent,
     HomeComponent,
-    PlayScreenComponent
+    PlayScreenComponent,
+    GameInterfaceComponent,
+    GameDetailsComponent
   ],
   imports: [
     BrowserModule,

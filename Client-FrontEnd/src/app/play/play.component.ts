@@ -9,6 +9,7 @@ import * as socketIo from 'socket.io-client';
 export class PlayComponent implements OnInit {
   socket;
   signedIn = false;
+  characterName;
 
   constructor(){}
 
@@ -18,8 +19,8 @@ export class PlayComponent implements OnInit {
     const ctrl = this;
 
     this.socket.on('checkSignIn', function(data){
-      ctrl.signedIn = data;
-      console.log(data);
+      ctrl.signedIn = data.isChar;
+      ctrl.characterName = data.characterName;
 
       ctrl.socket.emit('resetPlayScreenPage', data);
     });
