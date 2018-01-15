@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { SignInComponent } from './play/sign-in/sign-in.component';
 import { PlayComponent } from './play/play.component';
 import { HomeComponent } from './home/home.component';
+import { PlayScreenComponent } from './play/play-screen/play-screen.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     SignInComponent,
     PlayComponent,
-    HomeComponent
+    HomeComponent,
+    PlayScreenComponent
   ],
   imports: [
     BrowserModule,
