@@ -14,16 +14,12 @@ const manageSignIn = require('./sign-in/check-sign-in');
 console.log('server running ... ');
 
 io.on('connection', (socket) => {
-	socket.emit('db', data);
-
-	io.emit('connection count', getClientCount());
-
-	socket.on('to server', function(data) {
-		socket.broadcast.emit('from server', data);
-		io.emit('connection count', getClientCount());
-	});
 
 	manageSignIn.check(socket);
+
+	socket.on('resetPlayScreenPage', function(data){
+		setUpPlayScreen(socket);
+	});
 });
 
 const database = require('./database/connect-database');
@@ -47,4 +43,15 @@ function getClientCount(){
 	}
 	
 	return count;
+}
+
+function setUpPlayScreen(socket){
+	socket.emit('db', data);
+
+	io.emit('connection count', getClientCount());
+
+	socket.on('to server', function(data) {
+		socket.broadcast.emit('from server', data);
+		io.emit('connection count', getClientCount());
+	});
 }

@@ -1,22 +1,4 @@
-<div *ngIf="signedIn">
-  <pre>connections : {{connection}}</pre>
-
-  <div>
-    <input [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
-    <button (click)="sendText()">Insert</button>
-  </div>
-  
-  <div>
-    <textarea rows="8" cols="50" readonly>{{textArea}}</textarea>
-  </div>
-  
-  <div>
-    user: 
-    <input [(ngModel)]="userName">
-  </div>
-  
-  <pre>{{database | json}}</pre>
-</div>
+<play-screen *ngIf="signedIn" [socket]="socket"></play-screen>
 
 <sign-in *ngIf="!signedIn" (playFunction)="checkSignIn($event)"></sign-in>
 <pre>{{signedIn | json}}</pre>
