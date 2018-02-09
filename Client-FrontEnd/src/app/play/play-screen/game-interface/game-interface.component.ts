@@ -15,27 +15,36 @@ export class GameInterfaceComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.updateGame();
     this.recieveText();
   }
 
-ifEnter(event): void {
-    this.sendText();
-}
+  ifEnter(event): void {
+      this.sendText();
+  }
 
-sendText(): void{
-  const ctrl = this;
+  sendText(): void{
+    const ctrl = this;
 
-  this.textArea =  "me : " + this.inputText + "\n" + this.textArea;
-  this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
-  this.inputText = '';
-}
+    this.textArea =  "me : " + this.inputText + "\n" + this.textArea;
+    this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+    this.inputText = '';
+  }
 
-recieveText() : void{
-  const ctrl = this;
+  recieveText(): void{
+    const ctrl = this;
 
-  this.socket.on('from server', function(data){
-    ctrl.textArea = data + "\n" + ctrl.textArea;
-  });
-}
+    this.socket.on('from server', function(data){
+      ctrl.textArea = data + "\n" + ctrl.textArea;
+    });
+  }
+
+  updateGame(): void{
+    const ctrl = this;
+
+    this.socket.on('updateGame', function(data){
+      ctrl.textArea = data + "\n" + ctrl.textArea;
+    });
+  }
 
 }

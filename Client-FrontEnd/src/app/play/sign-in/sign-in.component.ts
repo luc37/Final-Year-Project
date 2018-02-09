@@ -6,14 +6,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  @Input() characterName;
-  @Input() password;
+  @Input() characterName = 'John';
+  @Input() password = 'password111';
   
   @Output() playFunction = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   play(): void{
     this.playFunction.emit({

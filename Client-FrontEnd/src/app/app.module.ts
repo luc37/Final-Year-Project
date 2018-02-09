@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { PlayScreenComponent } from './play/play-screen/play-screen.component';
 import { GameInterfaceComponent } from './play/play-screen/game-interface/game-interface.component';
 import { GameDetailsComponent } from './play/play-screen/game-details/game-details.component';
-
+import { SignInService } from './sign-in.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import { GameDetailsComponent } from './play/play-screen/game-details/game-detai
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [SignInService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

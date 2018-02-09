@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GameDetailsComponent implements OnInit {
   connectionCount;
-  database = 'database not connected';
+  playerList;
 
   @Input() socket;
   @Input() characterName;
@@ -15,8 +15,12 @@ export class GameDetailsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    const ctrl = this;
     this.getCountOfUsers();
-    this.setUpDatabase();
+
+    this.socket.on('player list', function(data){
+      ctrl.playerList = data;
+    });
   }
 
   getCountOfUsers(): void {
@@ -24,14 +28,6 @@ export class GameDetailsComponent implements OnInit {
 
     this.socket.on('connection count', function(data) {
       ctrl.connectionCount = data;
-    });
-  }
-
-  setUpDatabase() : void{
-    const ctrl = this;
-
-    this.socket.on('db', function(data){
-      ctrl.database = data;
     });
   }
 
