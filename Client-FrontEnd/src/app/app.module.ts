@@ -11,6 +11,7 @@ import { PlayScreenComponent } from './play/play-screen/play-screen.component';
 import { GameInterfaceComponent } from './play/play-screen/game-interface/game-interface.component';
 import { GameDetailsComponent } from './play/play-screen/game-details/game-details.component';
 import { SignInService } from './sign-in.service';
+import { CreateCharacterComponent } from './play/sign-in/create-character/create-character.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SignInService } from './sign-in.service';
     HomeComponent,
     PlayScreenComponent,
     GameInterfaceComponent,
-    GameDetailsComponent
+    GameDetailsComponent,
+    CreateCharacterComponent
   ],
   imports: [
     BrowserModule,

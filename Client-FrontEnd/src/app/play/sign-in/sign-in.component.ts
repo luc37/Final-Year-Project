@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CreateCharacterComponent } from './create-character/create-character.component'
 
 @Component({
   selector: 'sign-in',
@@ -10,6 +11,7 @@ export class SignInComponent implements OnInit {
   @Input() password = 'password111';
   
   @Output() playFunction = new EventEmitter<any>();
+  @Output() createCharacterFunction = new EventEmitter<any>();
 
   constructor() {}
 
@@ -20,6 +22,10 @@ export class SignInComponent implements OnInit {
       characterName: this.characterName,
       password: this.password
     });
+  }
+
+  createCharacter(event): void{
+    this.createCharacterFunction.emit(event);
   }
 
 }

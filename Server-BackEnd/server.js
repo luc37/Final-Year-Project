@@ -12,6 +12,7 @@ let clients;
 const database = require('./database/connect-database');
 const manageSignIn = require('./sign-in/check-sign-in');
 const game = require('./Game/Game');
+const createCharacter = require('./sign-in/create-character');
 
 let theGame;
 
@@ -33,6 +34,7 @@ database.connection.query('SELECT * from game where startRoomId = 1', function(e
 
 io.on('connection', (socket) => {
 	manageSignIn.check(socket, theGame.activePlayerList);
+	createCharacter.create(socket);
 
 	socket.on('resetPlayScreenPage', function(data){
 		theGame.addPlayerToActivePlayerList(data);

@@ -1,5 +1,11 @@
 <div>
+  <pre>SIGN IN</pre>
   Character Name : <input [(ngModel)]="characterName">
   Password : <input [(ngModel)]="password">
   <button (click)="play()">Play</button>
+</div>
+
+<div>
+  <pre>CREATE CHARACTER</pre>
+  <create-character (createCharacterFunction)="createCharacter($event)"></create-character>
 </div>

@@ -11,13 +11,14 @@ export class PlayComponent implements OnInit {
   socket;
   signedIn = false;
   characterName;
+  characterCreated = false;
 
   constructor(private signInService:SignInService){}
 
   ngOnInit(): void {
     if(!this.signedIn){
-      this.socket = socketIo('http://139.59.179.135:3000');
-      //this.socket = socketIo('http://localhost:3000');
+      //this.socket = socketIo('http://139.59.179.135:3000');
+      this.socket = socketIo('http://localhost:3000');
       const ctrl = this;
 
       if(this.signInService.character.characterName != null){
@@ -43,10 +44,18 @@ export class PlayComponent implements OnInit {
 
         ctrl.socket.emit('resetPlayScreenPage', data);
       });
+
+      this.socket.on('create character', function(data){
+        ctrl.characterCreated = true;
+      });
     }
   }
 
   checkSignIn(event): void{
     this.socket.emit('checkSignIn', event);
+  }
+
+  createCharacter(event):void{
+    this.socket.emit('create character', event);
   }
 }
