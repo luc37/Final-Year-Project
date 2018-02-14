@@ -17,8 +17,8 @@ export class PlayComponent implements OnInit {
 
   ngOnInit(): void {
     if(!this.signedIn){
-      //this.socket = socketIo('http://139.59.179.135:3000');
-      this.socket = socketIo('http://localhost:3000');
+      this.socket = socketIo('http://139.59.179.135:3000');
+      //this.socket = socketIo('http://localhost:3000');
       const ctrl = this;
 
       if(this.signInService.character.characterName != null){
@@ -38,9 +38,10 @@ export class PlayComponent implements OnInit {
 
         ctrl.signInService.character.characterName = data.name;
         ctrl.signInService.character.characterId = data.id;
-        ctrl.signInService.character.commands = data.commands;
+        ctrl.signInService.character.commands = data.commandList;
         ctrl.signInService.character.socketId = data.socketId;
         ctrl.signInService.character.isChar = data.isChar;
+        ctrl.signInService.character.roomId = data.roomId;
 
         ctrl.socket.emit('resetPlayScreenPage', data);
       });

@@ -1,16 +1,30 @@
+const commandList = require('../Commands/CommandList');
+
+function buildCommandList(){
+    let list = Object.create(commandList);
+    list.build(list.getList());
+    
+    return list;
+}
+
 const character = {
-    build: function(name, id, isChar, commands, socketId, alreadySignedIn){
+    build: function(name, id, isChar, socketId, roomId){
         this.name = name;
         this.id = id;
         this.isChar = isChar;
-        this.commands = commands;
+        this.commandList = buildCommandList();
         this.socketId = socketId;
+        this.roomId = roomId;
     },
     name: '',
     id: 0,
-    commands: [],
+    commandList: [],
     isChar: false,
-    socketId: ''
+    socketId: '',
+    roomId: null,
+    moveToNewRoom: function(){
+        console.log('move room function');
+    }
 }
 
 module.exports = character;

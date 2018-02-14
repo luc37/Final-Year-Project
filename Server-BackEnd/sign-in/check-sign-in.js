@@ -32,7 +32,7 @@ const checkSignIn = function(socket, activePlayerList){
                 });
             }
 
-            theCharacter.build(characterName, characterId, isChar, null, socketId);
+            theCharacter.build(characterName, characterId, isChar, socketId, 1);
             
             if(alreadySignedIn){
                 //emit a message - signed in somewhere else

@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SignInService } from '../../../sign-in.service';
+import { CurrentRoomService } from '../../../current-room.service';
+import { PlayerListService } from '../../../player-list.service';
 
 @Component({
   selector: 'game-interface',
@@ -12,22 +15,78 @@ export class GameInterfaceComponent implements OnInit {
   @Input() characterName;
   @Input() inputText;
   
-  constructor() {}
+  constructor(private signInService:SignInService, 
+              private currentRoomService:CurrentRoomService, 
+              private playerListService:PlayerListService){}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateGame();
     this.recieveText();
+    this.buildRoom();
   }
 
   ifEnter(event): void {
-      this.sendText();
+      this.runCommand();
   }
 
-  sendText(): void{
+  runCommand(): void{
     const ctrl = this;
+    let invalid = true;
 
-    this.textArea =  "me : " + this.inputText + "\n" + this.textArea;
-    this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+    this.signInService.character.commands.list.forEach(command => {
+      command.activationStrings.forEach(activationString => {
+        if(ctrl.inputText === activationString){
+          invalid = false;
+
+          if(command.name.includes('Exit room')){
+            let direction;
+            if(command.name === 'Exit room north'){
+              direction = 'north';
+            } else if(command.name === 'Exit room east'){
+              direction = 'east';
+            } else if(command.name === 'Exit room south'){
+              direction = 'south';
+            } else if(command.name === 'Exit room west') {
+              direction = 'west';
+            }
+
+            let noExit = true;
+
+            ctrl.currentRoomService.room.exits.forEach(exit => {
+              exit.activationCommands.forEach(exitCommand => {
+                if(activationString === exitCommand){
+                  console.log('there is a room ' + direction + ', going north to room : ' + exit.destinationId);
+                  ctrl.signInService.character.roomId = exit.destinationId;
+
+                  ctrl.displayText('you move ' + direction);
+                  ctrl.socket.emit('move to room', ctrl.signInService.character);
+
+                  noExit = false;
+                }
+              });
+            });
+            
+            if(noExit){
+              console.log('no exit to the ' + direction);
+              ctrl.displayText('There is no exit to the ' + direction);
+            }
+          } else if(null){
+            //another command
+          } else if(null){
+            //another command
+          }
+          else{
+            this.textArea =  "me : " + this.inputText + "\n\n" + this.textArea;
+            this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+          }
+        }
+      })
+    });
+
+    if(invalid){
+      this.displayText('Thats not a valid command');
+    }
+
     this.inputText = '';
   }
 
@@ -35,7 +94,7 @@ export class GameInterfaceComponent implements OnInit {
     const ctrl = this;
 
     this.socket.on('from server', function(data){
-      ctrl.textArea = data + "\n" + ctrl.textArea;
+      ctrl.displayText(data);
     });
   }
 
@@ -43,8 +102,27 @@ export class GameInterfaceComponent implements OnInit {
     const ctrl = this;
 
     this.socket.on('updateGame', function(data){
-      ctrl.textArea = data + "\n" + ctrl.textArea;
+      if(data !== 'Update Game'){
+        ctrl.displayText(data);
+      }
     });
+  }
+
+  buildRoom(): void{
+    const ctrl = this;
+
+    this.socket.on('the room', function(room){
+      ctrl.currentRoomService.room = room;
+      ctrl.displayText(ctrl.currentRoomService.room.description);
+
+      ctrl.playerListService.updateRoomList();
+
+      ctrl.socket.emit('update room lists', null);
+    });
+  }
+
+  displayText(text): void{
+    this.textArea =  text + "\n\n" + this.textArea ;
   }
 
 }

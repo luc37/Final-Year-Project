@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SignInService } from '../../../sign-in.service';
+import { PlayerListService } from '../../../player-list.service';
 
 @Component({
   selector: 'game-details',
@@ -12,14 +14,23 @@ export class GameDetailsComponent implements OnInit {
   @Input() socket;
   @Input() characterName;
 
-  constructor() { }
+    
+  roomList;
+
+  constructor(private signInService:SignInService, private playerListService:PlayerListService) { }
 
   ngOnInit() {
     const ctrl = this;
     this.getCountOfUsers();
+    this.updateRoomLists();
 
-    this.socket.on('player list', function(data){
-      ctrl.playerList = data;
+    this.socket.on('player list', function(list){
+      ctrl.playerList = list;
+      ctrl.playerListService.playerList = list;
+    });
+
+    this.socket.on('set up player list', function(list){
+      ctrl.playerListService.playerList = list;
     });
   }
 
@@ -28,6 +39,15 @@ export class GameDetailsComponent implements OnInit {
 
     this.socket.on('connection count', function(data) {
       ctrl.connectionCount = data;
+    });
+  }
+
+  updateRoomLists(): void{
+    const ctrl = this;
+
+    this.socket.on('update room lists', function(){
+      ctrl.playerListService.updateRoomList();
+      ctrl.roomList = ctrl.playerListService.playersInRoomList;
     });
   }
 

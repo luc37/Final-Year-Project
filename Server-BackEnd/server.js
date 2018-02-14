@@ -36,24 +36,34 @@ io.on('connection', (socket) => {
 	manageSignIn.check(socket, theGame.activePlayerList);
 	createCharacter.create(socket);
 
-	socket.on('resetPlayScreenPage', function(data){
-		theGame.addPlayerToActivePlayerList(data);
+	socket.on('resetPlayScreenPage', function(character){
+		theGame.addPlayerToActivePlayerList(character);
 		theGame.intoduceNewPlayer(socket);
 		setUpPlayScreen(socket);
+
+		io.emit('set up player list', theGame.activePlayerList);
+
+		theGame.buildRoom(character, socket, io);
 	});
 
-	socket.on('switch tabs', function(data){
+	socket.on('switch tabs', function(character){
 		theGame.activePlayerList.forEach(element => {
 
-			if(element.id === data.characterId){
+			if(element.id === character.characterId){
 				element.socketId = socket.id;
 				
 				setUpPlayScreen(socket);
-				io.sockets.connected[data.socketId].disconnect();
+				io.sockets.connected[character.socketId].disconnect();
+
+				theGame.buildRoom(character, socket, io);
 			}
 
 			socket.emit('new socket', socket.id);
 		});
+	});
+
+	socket.on('move to room', function(character){
+		theGame.buildRoom(character, socket, io);
 	});
 	
 	socket.on('disconnect', function () {
@@ -76,10 +86,13 @@ function getClientCount(){
 
 function setUpPlayScreen(socket){
 	io.emit('connection count', getClientCount());
-	io.emit('player list', theGame.activePlayerList);
-
+	//io.emit('player list', theGame.activePlayerList);
 
 	socket.on('to server', function(data) {
 		socket.broadcast.emit('from server', data);
+	});
+
+	socket.on('update room lists', function() {
+		io.emit('update room lists', null);
 	});
 }

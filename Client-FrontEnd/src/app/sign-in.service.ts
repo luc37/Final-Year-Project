@@ -10,7 +10,8 @@ export class SignInService {
     characterId: null,
     commands: null,
     socketId: null,
-    isChar: null
+    isChar: null,
+    roomId: null
   }
 
 

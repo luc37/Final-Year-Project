@@ -12,6 +12,8 @@ import { GameInterfaceComponent } from './play/play-screen/game-interface/game-i
 import { GameDetailsComponent } from './play/play-screen/game-details/game-details.component';
 import { SignInService } from './sign-in.service';
 import { CreateCharacterComponent } from './play/sign-in/create-character/create-character.component';
+import { CurrentRoomService } from './current-room.service';
+import { PlayerListService } from './player-list.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,7 @@ import { CreateCharacterComponent } from './play/sign-in/create-character/create
     FormsModule,
     AppRoutingModule
   ],
-  providers: [SignInService],
+  providers: [SignInService, CurrentRoomService, PlayerListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

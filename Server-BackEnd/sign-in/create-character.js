@@ -12,7 +12,6 @@ const create = function(socket){
                 socket.emit('create character', null);
             }
         });
-
     });
 }
 
