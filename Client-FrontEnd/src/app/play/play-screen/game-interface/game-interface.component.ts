@@ -87,7 +87,7 @@ export class GameInterfaceComponent implements OnInit {
               let result = this.inputText.substr(this.inputText.indexOf(" ") + 1);
 
               this.displayText("me : " + result);
-              this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+              this.socket.emit('to server', ctrl.characterName + " : says" + result);
             }
             i ++;
           }
