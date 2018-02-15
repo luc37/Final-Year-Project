@@ -32,6 +32,7 @@ export class GameInterfaceComponent implements OnInit {
   runCommand(): void{
     const ctrl = this;
     let invalid = true;
+    let i = 0;
 
     this.signInService.character.commands.list.forEach(command => {
       command.activationStrings.forEach(activationString => {
@@ -70,14 +71,25 @@ export class GameInterfaceComponent implements OnInit {
               console.log('no exit to the ' + direction);
               ctrl.displayText('There is no exit to the ' + direction);
             }
-          } else if(null){
+          } else if(false){
             //another command
-          } else if(null){
+          } else if(false){
             //another command
+          } else{
+            //unkown command
           }
-          else{
-            this.textArea =  "me : " + this.inputText + "\n\n" + this.textArea;
-            this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+        } else{
+
+          if(this.inputText.startsWith('Say') || this.inputText.startsWith('say')){
+            invalid = false;
+
+            if(i < 1 ){
+              let result = this.inputText.substr(this.inputText.indexOf(" ") + 1);
+
+              this.displayText("me : " + result);
+              this.socket.emit('to server', ctrl.characterName + " : " + ctrl.inputText);
+            }
+            i ++;
           }
         }
       })
