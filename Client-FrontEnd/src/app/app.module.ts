@@ -14,6 +14,8 @@ import { SignInService } from './sign-in.service';
 import { CreateCharacterComponent } from './play/sign-in/create-character/create-character.component';
 import { CurrentRoomService } from './current-room.service';
 import { PlayerListService } from './player-list.service';
+import { AdditionalInfoComponent } from './play/play-screen/game-details/additional-info/additional-info.component';
+import { MapComponent } from './play/play-screen/game-details/map/map.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { PlayerListService } from './player-list.service';
     PlayScreenComponent,
     GameInterfaceComponent,
     GameDetailsComponent,
-    CreateCharacterComponent
+    CreateCharacterComponent,
+    AdditionalInfoComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

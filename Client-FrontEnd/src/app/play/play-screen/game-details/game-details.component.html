@@ -1,11 +1,14 @@
-PLAYER DETAILS
-<pre>Character : {{this.characterName}}</pre>
+<div>
+    <div>
+        <map></map>
+    </div>
+    <div> 
+        <h5>In Room</h5>
+        <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
+    </div>
+    <div>
+        <h5>Players Online : {{playerCount}} : {{connectionCount}}</h5>
+        <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
+    </div>
+</div>
 
-IN ROOM
-<pre *ngFor="let character of roomList">{{character.name}}</pre>
-
-PLAYER LIST
-<pre *ngFor="let player of playerList">{{player.name}}</pre>
-
-DEBUG
-<pre>connections to socketIO : {{connectionCount}}</pre>

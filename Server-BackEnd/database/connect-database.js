@@ -5,8 +5,8 @@ const database = {
         host: 'localhost',
         user: 'root',
         password: 'Mnbvcxz111&&&999',
-        database: 'mudserver',
-        socketPath: '/var/run/mysqld/mysqld.sock'
+        database: 'mudserver'
+        //socketPath: '/var/run/mysqld/mysqld.sock'
     })
 }
 

@@ -1,5 +1,3 @@
-GAME INTERFACE
-
 <div>
   <input [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
   <button (click)="runCommand()">Insert</button>
@@ -7,4 +5,12 @@ GAME INTERFACE
 
 <div>
   <textarea rows="20" cols="100" readonly>{{textArea}}</textarea>
+</div>
+
+<div class="char-name">
+    <h4>{{this.characterName}}</h4>
+</div>
+
+<div>
+    <additional-info [socket]="socket"></additional-info>
 </div>

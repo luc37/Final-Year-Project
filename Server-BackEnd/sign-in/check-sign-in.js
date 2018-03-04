@@ -9,9 +9,10 @@ const checkSignIn = function(socket, activePlayerList){
     let characterId;
     let socketId = socket.id;
     let alreadySignedIn = false;
+    let theRoomId ;
 
     socket.on('checkSignIn', function(data) {
-        database.connection.query('SELECT characterName, password, characterId from user', function(err, rows){
+        database.connection.query('SELECT characterName, password, characterId, roomId from user', function(err, rows){
             if(err){
                 console.log(err);
             }else{
@@ -20,6 +21,7 @@ const checkSignIn = function(socket, activePlayerList){
                         isChar = true;
                         characterName = data.characterName;
                         characterId = rows[i].characterId;
+                        theRoomId = rows[i].roomId;
                     }
                 }
             }
@@ -32,7 +34,7 @@ const checkSignIn = function(socket, activePlayerList){
                 });
             }
 
-            theCharacter.build(characterName, characterId, isChar, socketId, 1);
+            theCharacter.build(characterName, characterId, isChar, socketId, theRoomId);
             
             if(alreadySignedIn){
                 //emit a message - signed in somewhere else

@@ -28,7 +28,7 @@ database.connection.query('SELECT * from game where startRoomId = 1', function(e
 
 		setInterval(function() {
 			theGame.run(io);
-		}, 10000);
+		}, 1000);
 	}
 });
 
@@ -36,63 +36,5 @@ io.on('connection', (socket) => {
 	manageSignIn.check(socket, theGame.activePlayerList);
 	createCharacter.create(socket);
 
-	socket.on('resetPlayScreenPage', function(character){
-		theGame.addPlayerToActivePlayerList(character);
-		theGame.intoduceNewPlayer(socket);
-		setUpPlayScreen(socket);
-
-		io.emit('set up player list', theGame.activePlayerList);
-
-		theGame.buildRoom(character, socket, io);
-	});
-
-	socket.on('switch tabs', function(character){
-		theGame.activePlayerList.forEach(element => {
-
-			if(element.id === character.characterId){
-				element.socketId = socket.id;
-				
-				setUpPlayScreen(socket);
-				io.sockets.connected[character.socketId].disconnect();
-
-				theGame.buildRoom(character, socket, io);
-			}
-
-			socket.emit('new socket', socket.id);
-		});
-	});
-
-	socket.on('move to room', function(character){
-		theGame.buildRoom(character, socket, io);
-	});
-	
-	socket.on('disconnect', function () {
-		theGame.removePlayerFromActivePlayerList(socket.id);
-		io.emit('connection count', getClientCount());
-		io.emit('player list', theGame.activePlayerList);
-	});
+	theGame.setUp(theGame, socket, io);
 });
-
-function getClientCount(){
-	clients = io.sockets.clients();
-
-	let count = 0;
-	for(let o in clients.connected){
-		count++;
-	}
-	
-	return count;
-}
-
-function setUpPlayScreen(socket){
-	io.emit('connection count', getClientCount());
-	//io.emit('player list', theGame.activePlayerList);
-
-	socket.on('to server', function(data) {
-		socket.broadcast.emit('from server', data);
-	});
-
-	socket.on('update room lists', function() {
-		io.emit('update room lists', null);
-	});
-}

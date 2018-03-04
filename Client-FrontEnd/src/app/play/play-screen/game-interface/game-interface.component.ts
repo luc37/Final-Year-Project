@@ -6,10 +6,12 @@ import { PlayerListService } from '../../../player-list.service';
 @Component({
   selector: 'game-interface',
   templateUrl: './game-interface.component.html',
-  styleUrls: ['./game-interface.component.css']
+  styleUrls: ['./game-interface.component.less']
 })
 export class GameInterfaceComponent implements OnInit {
   textArea = '';
+  command;
+  excutingCommand = false;
 
   @Input() socket;
   @Input() characterName;
@@ -34,20 +36,20 @@ export class GameInterfaceComponent implements OnInit {
     let invalid = true;
     let i = 0;
 
-    this.signInService.character.commands.list.forEach(command => {
+    this.signInService.character.commandList.list.forEach(command => {
       command.activationStrings.forEach(activationString => {
         if(ctrl.inputText === activationString){
           invalid = false;
 
-          if(command.name.includes('Exit room')){
+          if(command.name.includes('Walk') || command.name.includes('Run') || command.name.includes('Sneak') ){
             let direction;
-            if(command.name === 'Exit room north'){
+            if(command.name.includes('north')){
               direction = 'north';
-            } else if(command.name === 'Exit room east'){
+            } else if(command.name.includes('east')){
               direction = 'east';
-            } else if(command.name === 'Exit room south'){
+            } else if(command.name.includes('south')){
               direction = 'south';
-            } else if(command.name === 'Exit room west') {
+            } else if(command.name.includes('west')) {
               direction = 'west';
             }
 
@@ -55,12 +57,15 @@ export class GameInterfaceComponent implements OnInit {
 
             ctrl.currentRoomService.room.exits.forEach(exit => {
               exit.activationCommands.forEach(exitCommand => {
+
                 if(activationString === exitCommand){
                   console.log('there is a room ' + direction + ', going north to room : ' + exit.destinationId);
                   ctrl.signInService.character.roomId = exit.destinationId;
 
-                  ctrl.displayText('you move ' + direction);
-                  ctrl.socket.emit('move to room', ctrl.signInService.character);
+                  ctrl.displayText(command.executingText + ' ... ' + command.executionTime.toString());
+
+                  ctrl.command = command;
+                  ctrl.excutingCommand = true;
 
                   noExit = false;
                 }
@@ -75,8 +80,6 @@ export class GameInterfaceComponent implements OnInit {
             //another command
           } else if(false){
             //another command
-          } else{
-            //unkown command
           }
         } else{
 
@@ -87,7 +90,7 @@ export class GameInterfaceComponent implements OnInit {
               let result = this.inputText.substr(this.inputText.indexOf(" ") + 1);
 
               this.displayText("me : " + result);
-              this.socket.emit('to server', ctrl.characterName + " : says" + result);
+              this.socket.emit('to server', ctrl.characterName + " : says " + result);
             }
             i ++;
           }
@@ -117,6 +120,27 @@ export class GameInterfaceComponent implements OnInit {
       if(data !== 'Update Game'){
         ctrl.displayText(data);
       }
+
+      if(ctrl.excutingCommand === true){
+        if(ctrl.command.executionTime > 0){
+          ctrl.command.executionTime = ctrl.command.executionTime -1
+          ctrl.replaceLastText(ctrl.command.executingText + ' ... ' + ctrl.command.executionTime.toString());
+          
+          let addInfoText = ctrl.signInService.character.name + ' is ' + ctrl.command.executingText + ' ... ' + ctrl.command.executionTime.toString();
+          let arr = [ctrl.signInService.character.id, addInfoText];
+          ctrl.socket.emit('update additional info', arr);
+        }else{
+          ctrl.replaceLastText('You ' + ctrl.command.completedText);
+
+          ctrl.socket.emit(ctrl.command.socketCall, ctrl.signInService.character);
+          
+          let arr = [ctrl.signInService.character.id, ctrl.signInService.character.name + ' ' + ctrl.command.completedText]
+          ctrl.socket.emit('update additional info', arr);
+
+          ctrl.excutingCommand = false;
+        }
+      }
+
     });
   }
 
@@ -135,6 +159,12 @@ export class GameInterfaceComponent implements OnInit {
 
   displayText(text): void{
     this.textArea =  text + "\n\n" + this.textArea ;
+  }
+
+  replaceLastText(text): void{
+    var firstLine = this.textArea.split('\n')[0];
+
+    this.textArea = this.textArea.replace(firstLine, text);
   }
 
 }

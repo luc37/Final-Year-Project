@@ -5,7 +5,7 @@ import { PlayerListService } from '../../../player-list.service';
 @Component({
   selector: 'game-details',
   templateUrl: './game-details.component.html',
-  styleUrls: ['./game-details.component.css']
+  styleUrls: ['./game-details.component.less']
 })
 export class GameDetailsComponent implements OnInit {
   connectionCount;
@@ -13,9 +13,9 @@ export class GameDetailsComponent implements OnInit {
 
   @Input() socket;
   @Input() characterName;
-
     
   roomList;
+  playerCount;
 
   constructor(private signInService:SignInService, private playerListService:PlayerListService) { }
 
@@ -27,6 +27,7 @@ export class GameDetailsComponent implements OnInit {
     this.socket.on('player list', function(list){
       ctrl.playerList = list;
       ctrl.playerListService.playerList = list;
+      ctrl.playerCount = ctrl.playerListService.playerList.length;
     });
 
     this.socket.on('set up player list', function(list){

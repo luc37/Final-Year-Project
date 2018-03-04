@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'create-character',
   templateUrl: './create-character.component.html',
-  styleUrls: ['./create-character.component.css']
+  styleUrls: ['./create-character.component.less']
 })
 export class CreateCharacterComponent implements OnInit {
 

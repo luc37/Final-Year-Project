@@ -6,9 +6,9 @@ export class SignInService {
   constructor() { }
 
   character = {
-    characterName: null,
-    characterId: null,
-    commands: null,
+    name: null,
+    id: null,
+    commandList: null,
     socketId: null,
     isChar: null,
     roomId: null

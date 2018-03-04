@@ -4,7 +4,7 @@ import { CreateCharacterComponent } from './create-character/create-character.co
 @Component({
   selector: 'sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css']
+  styleUrls: ['./sign-in.component.less']
 })
 export class SignInComponent implements OnInit {
   @Input() characterName = 'John';
