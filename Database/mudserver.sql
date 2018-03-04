@@ -104,8 +104,9 @@ CREATE TABLE `user` (
   `characterId` mediumint(9) NOT NULL AUTO_INCREMENT,
   `email` varchar(30) DEFAULT NULL,
   `password` varchar(30) DEFAULT NULL,
+  `roomId` mediumint(9) DEFAULT NULL,
   PRIMARY KEY (`characterId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +115,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('John',1,'test@test.com','password111'),('Bill',2,'test2@email.com','password112'),('Brian',3,'brian@email.com','password111'),('Phil',4,'phil@email.com','password111'),('Humph',5,'humph@email.com','password111');
+INSERT INTO `user` VALUES ('John',1,'test@test.com','password111',1),('Bill',2,'test2@email.com','password112',2),('Brian',3,'brian@email.com','password111',3),('Phil',4,'phil@email.com','password111',1),('Humph',5,'humph@email.com','password111',2),('Tim',6,'','1',3);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -127,4 +128,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-15 17:49:06
+-- Dump completed on 2018-03-04 22:58:42
