@@ -1,7 +1,2 @@
-<div>
-    <play-screen *ngIf="signedIn" [socket]="socket" [characterName]="characterName"></play-screen>
-    <sign-in *ngIf="!signedIn" (playFunction)="checkSignIn($event)" (createCharacterFunction)="createCharacter($event)"></sign-in>
-</div>
-
-
-<div *ngIf="characterCreated">Character created</div>
+<play-screen *ngIf="signedIn" [socket]="socket" [characterName]="characterName"></play-screen>
+<sign-in *ngIf="!signedIn" (playFunction)="checkSignIn($event)" (createCharacterFunction)="createCharacter($event)"></sign-in>

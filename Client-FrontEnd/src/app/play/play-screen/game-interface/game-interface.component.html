@@ -1,16 +1,31 @@
-<div>
-  <input [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
-  <button (click)="runCommand()">Insert</button>
+<div class="container-fluid">
+    <div class="panel panel-default shadows">
+        <div class="panel-body">
+          <form>
+            <div class="input-group  interface-padding">
+                <input name="input-bar" [disabled]="executingCheck()" type="text" class="form-control" placeholder="enter command ... " aria-describedby="basic-addon2" [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
+                <span class="input-group-addon" id="basic-addon2" (click)="runCommand()">Insert</span>
+            </div>
+            <textarea class="form-control" rows="10">{{textArea}}</textarea>
+          </form>
+            
+        </div>
+    </div>
 </div>
 
-<div>
-  <textarea rows="20" cols="100" readonly>{{textArea}}</textarea>
+<div class="container-fluid">
+    <div class="panel panel-default shadows">
+        <div class="panel-body">
+            <h4>{{this.characterName}}</h4>
+        </div>
+    </div>
 </div>
 
-<div class="char-name">
-    <h4>{{this.characterName}}</h4>
+<div class="container-fluid">
+    <div class="panel panel-default shadows">
+        <div class="panel-body">
+            <additional-info [socket]="socket"></additional-info>
+        </div>
+    </div>
 </div>
 
-<div>
-    <additional-info [socket]="socket"></additional-info>
-</div>

@@ -1,14 +1,28 @@
-<div>
-    <div>
-        <map></map>
-    </div>
-    <div> 
-        <h5>In Room</h5>
-        <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
-    </div>
-    <div>
-        <h5>Players Online : {{playerCount}} : {{connectionCount}}</h5>
-        <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
+<div class="container-fluid">
+    <div class="panel panel-default shadows">
+        <div class="panel-body">
+            <map></map>
+        </div>
     </div>
 </div>
+
+<div class="container-fluid">
+    <div class="panel panel-default shadows">
+        <div class="panel-body">
+            <h5>In Room</h5>
+            <hr>
+            <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+        <div class="panel panel-default shadows">
+            <div class="panel-body" >
+                <h5>Players Online : {{playerCount}} : {{connectionCount}}</h5>
+                <hr>
+                <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
+            </div>
+        </div>
+    </div>
 

@@ -36,73 +36,75 @@ export class GameInterfaceComponent implements OnInit {
     let invalid = true;
     let i = 0;
 
-    this.signInService.character.commandList.list.forEach(command => {
-      command.activationStrings.forEach(activationString => {
-        if(ctrl.inputText === activationString){
-          invalid = false;
-
-          if(command.name.includes('Walk') || command.name.includes('Run') || command.name.includes('Sneak') ){
-            let direction;
-            if(command.name.includes('north')){
-              direction = 'north';
-            } else if(command.name.includes('east')){
-              direction = 'east';
-            } else if(command.name.includes('south')){
-              direction = 'south';
-            } else if(command.name.includes('west')) {
-              direction = 'west';
-            }
-
-            let noExit = true;
-
-            ctrl.currentRoomService.room.exits.forEach(exit => {
-              exit.activationCommands.forEach(exitCommand => {
-
-                if(activationString === exitCommand){
-                  console.log('there is a room ' + direction + ', going north to room : ' + exit.destinationId);
-                  ctrl.signInService.character.roomId = exit.destinationId;
-
-                  ctrl.displayText(command.executingText + ' ... ' + command.executionTime.toString());
-
-                  ctrl.command = command;
-                  ctrl.excutingCommand = true;
-
-                  noExit = false;
-                }
-              });
-            });
-            
-            if(noExit){
-              console.log('no exit to the ' + direction);
-              ctrl.displayText('There is no exit to the ' + direction);
-            }
-          } else if(false){
-            //another command
-          } else if(false){
-            //another command
-          }
-        } else{
-
-          if(this.inputText.startsWith('Say') || this.inputText.startsWith('say')){
+    if(!this.excutingCommand){
+      this.signInService.character.commandList.list.forEach(command => {
+        command.activationStrings.forEach(activationString => {
+          if(ctrl.inputText === activationString){
             invalid = false;
 
-            if(i < 1 ){
-              let result = this.inputText.substr(this.inputText.indexOf(" ") + 1);
+            if(command.name.includes('Walk') || command.name.includes('Run') || command.name.includes('Sneak') ){
+              let direction;
+              if(command.name.includes('north')){
+                direction = 'north';
+              } else if(command.name.includes('east')){
+                direction = 'east';
+              } else if(command.name.includes('south')){
+                direction = 'south';
+              } else if(command.name.includes('west')) {
+                direction = 'west';
+              }
 
-              this.displayText("me : " + result);
-              this.socket.emit('to server', ctrl.characterName + " : says " + result);
+              let noExit = true;
+
+              ctrl.currentRoomService.room.exits.forEach(exit => {
+                exit.activationCommands.forEach(exitCommand => {
+
+                  if(activationString === exitCommand){
+                    console.log('there is a room ' + direction + ', going north to room : ' + exit.destinationId);
+                    ctrl.signInService.character.roomId = exit.destinationId;
+
+                    ctrl.displayText(command.executingText + ' ... ' + command.executionTime.toString());
+
+                    ctrl.command = command;
+                    ctrl.excutingCommand = true;
+
+                    noExit = false;
+                  }
+                });
+              });
+              
+              if(noExit){
+                console.log('no exit to the ' + direction);
+                ctrl.displayText('There is no exit to the ' + direction);
+              }
+            } else if(false){
+              //another command
+            } else if(false){
+              //another command
             }
-            i ++;
+          } else{
+
+            if(this.inputText.startsWith('Say') || this.inputText.startsWith('say')){
+              invalid = false;
+
+              if(i < 1 ){
+                let result = this.inputText.substr(this.inputText.indexOf(" ") + 1);
+
+                this.displayText("me : " + result);
+                this.socket.emit('to server', ctrl.characterName + " : says " + result);
+              }
+              i ++;
+            }
           }
-        }
-      })
-    });
+        })
+      });
 
-    if(invalid){
-      this.displayText('Thats not a valid command');
+      if(invalid){
+        this.displayText('Thats not a valid command');
+      }
+
+      this.inputText = '';
     }
-
-    this.inputText = '';
   }
 
   recieveText(): void{
@@ -165,6 +167,10 @@ export class GameInterfaceComponent implements OnInit {
     var firstLine = this.textArea.split('\n')[0];
 
     this.textArea = this.textArea.replace(firstLine, text);
+  }
+
+  executingCheck(): boolean{
+    return this.excutingCommand;
   }
 
 }

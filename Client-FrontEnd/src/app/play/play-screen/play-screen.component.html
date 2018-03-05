@@ -1,10 +1,10 @@
-<div>
-    <div class="game-interface">
-        <game-interface [socket]="socket" [characterName]="characterName"></game-interface>
-    </div>
-
-    <div class="game-details">
-        <game-details [socket]="socket" [characterName]="characterName"></game-details>
+<div class="container">
+    <div class="panel panel-default main-play-screen">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6"><game-interface [socket]="socket" [characterName]="characterName"></game-interface></div>
+                <div class="col-md-6"><game-details [socket]="socket" [characterName]="characterName"></game-details></div>
+            </div> 
+        </div>
     </div>
 </div>
-
