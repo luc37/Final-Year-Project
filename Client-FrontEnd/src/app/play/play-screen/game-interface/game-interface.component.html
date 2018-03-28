@@ -3,7 +3,7 @@
         <div class="panel-body">
           <form>
             <div class="input-group  interface-padding">
-                <input name="input-bar" [disabled]="executingCheck()" type="text" class="form-control" placeholder="enter command ... " aria-describedby="basic-addon2" [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
+                <input id='input' name="input-bar" [disabled]="executingCheck()" type="text" class="form-control" placeholder="enter command ... " aria-describedby="basic-addon2" [(ngModel)]="inputText" (keydown.enter)="ifEnter($event)">
                 <span class="input-group-addon" id="basic-addon2" (click)="runCommand()">Insert</span>
             </div>
             <textarea class="form-control" rows="10">{{textArea}}</textarea>

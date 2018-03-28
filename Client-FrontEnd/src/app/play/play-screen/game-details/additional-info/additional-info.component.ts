@@ -21,11 +21,11 @@ export class AdditionalInfoComponent implements OnInit {
   ngOnInit() {
     const ctrl = this;
 
-    this.socket.on('update additional info', function(arr){
+    this.socket.on('update additional info', function(object){
       let index, change = false;
 
       ctrl.textArea.forEach(function (row, i){
-        if(arr[0] === ctrl.list[i][0]){
+        if(object.id === ctrl.list[i].id){
           index = i;
           change = true;
         }
@@ -36,8 +36,8 @@ export class AdditionalInfoComponent implements OnInit {
        ctrl.list.splice(index, 1);
       }
 
-      ctrl.textArea.unshift(arr[1]);
-      ctrl.list.unshift(arr);
+      ctrl.textArea.unshift(object.text);
+      ctrl.list.unshift(object);
     });
   }
 }

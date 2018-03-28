@@ -11,7 +11,8 @@ export class SignInService {
     commandList: null,
     socketId: null,
     isChar: null,
-    roomId: null
+    roomId: null,
+    lookDirecion: null
   }
 
 

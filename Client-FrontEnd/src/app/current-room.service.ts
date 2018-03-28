@@ -10,7 +10,12 @@ export class CurrentRoomService {
     areaId: null,
     id: null,
     description: null,
-    exits: null
+    exits: null,
+    position: null,
+    northBoundary: null,
+    eastBoundary: null,
+    southBoundary: null,
+    westBoundary: null
   }
 
 }

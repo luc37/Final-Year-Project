@@ -34,7 +34,7 @@ const checkSignIn = function(socket, activePlayerList){
                 });
             }
 
-            theCharacter.build(characterName, characterId, isChar, socketId, theRoomId);
+            theCharacter.build(characterName, characterId, isChar, socketId, theRoomId, 'north');
             
             if(alreadySignedIn){
                 //emit a message - signed in somewhere else

@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="panel panel-default shadows">
         <div class="panel-body">
-            <map></map>
+            <map [socket]="socket"></map>
         </div>
     </div>
 </div>
@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <div class="panel panel-default shadows">
         <div class="panel-body">
-            <h5>In Room</h5>
+            <h5>In {{roomName}} : <i>{{roomDescription}}</i></h5>
             <hr>
             <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
         </div>

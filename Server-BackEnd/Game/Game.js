@@ -1,11 +1,27 @@
-const room = require('../Locations/Room');
 const database = require('../database/connect-database');
+
+const room = require('../Locations/Room');
+const map = require('../Game/Map');
+
+const mapHeight = 10;
+const mapWidth = 10;
 
 const game = {
     build: function(startRoomId){
         this.startRoomId = startRoomId;
     },
     setUp: function(theGame, socket, io){
+
+        theMap = Object.create(map);
+        theMap.build(theGame, mapWidth, mapHeight);
+        
+        socket.on('colour ui map', function(){
+            io.sockets.emit('colour ui map', theGame.map);
+        });
+
+        socket.on('look direction', function(){
+            socket.emit('colour ui map', theGame.map);
+        });
 
         socket.on('move to room', function(character){
             theGame.buildRoom(character, socket, io);
@@ -37,8 +53,15 @@ const game = {
             theGame.buildRoom(character, socket, io);
         });
 
-        socket.on('update additional info', function(arr){
-            socket.broadcast.emit('update additional info', arr);
+        socket.on('update additional info', function(object){
+
+            if(object.socketCall === 'move to room'){
+                socket.broadcast.emit('update additional info', object);
+            } else{
+                object.text = 'nope!!!'
+                socket.broadcast.emit('update additional info', object);
+            }
+            
         });
 
         socket.on('disconnect', function () {
@@ -46,6 +69,7 @@ const game = {
             io.emit('connection count', getClientCount(io));
             io.emit('player list', theGame.activePlayerList);
             io.emit('update room lists', null);
+            io.emit('colour ui map', theGame.map);
         });
     },
     addPlayerToActivePlayerList: function(character){
@@ -92,16 +116,51 @@ const game = {
             if(err){
                 console.log(err);
             }else{
-                theRoom.build(rows[0].name, rows[0].description, rows[0].id, rows[0].areaId, theRoom.getExits(rows[0]));
-                socket.emit('the room', theRoom);
 
-                ctrl.activePlayerList.forEach(char =>{
-                    if(char.id === character.id){
-                        char.roomId = character.roomId;
+                theRoom.build(rows[0]);
+
+                database.connection.query('select * from boundary where id = ' + theRoom.northBoundary, function(err, rows){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        theRoom.getBoundary(rows[0] ,'n');
                     }
                 });
-                
-                io.emit('player list', ctrl.activePlayerList);
+
+                database.connection.query('select * from boundary where id = ' + theRoom.eastBoundary, function(err, rows){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        theRoom.getBoundary(rows[0] ,'e');
+                    }
+                });
+
+                database.connection.query('select * from boundary where id = ' + theRoom.southBoundary, function(err, rows){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        theRoom.getBoundary(rows[0] ,'s');
+                    }
+                });
+
+                database.connection.query('select * from boundary where id = ' + theRoom.westBoundary, function(err, rows){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        theRoom.getBoundary(rows[0] ,'w');
+
+                        theRoom.addExits(theRoom.getExits(theRoom, mapWidth, mapHeight));
+                        socket.emit('the room', theRoom);
+
+                        ctrl.activePlayerList.forEach(char =>{
+                            if(char.id === character.id){
+                                char.roomId = character.roomId;
+                            }
+                        });
+                        
+                        io.emit('player list', ctrl.activePlayerList);
+                    }
+                });
             }
         });
     },
@@ -109,7 +168,8 @@ const game = {
 
     },
     startRoomId: 0,
-    activePlayerList:[]
+    activePlayerList:[],
+    map:[]
 }
 
 function setUpPlayScreen(socket, io){

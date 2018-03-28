@@ -16,15 +16,26 @@ export class GameInterfaceComponent implements OnInit {
   @Input() socket;
   @Input() characterName;
   @Input() inputText;
-  
+
   constructor(private signInService:SignInService, 
               private currentRoomService:CurrentRoomService, 
               private playerListService:PlayerListService){}
 
   ngOnInit(): void {
+    const ctrl = this;
+    
     this.updateGame();
     this.recieveText();
     this.buildRoom();
+
+    let myTimer = setInterval(function() {
+      if(document.getElementById("input") === null){
+        clearInterval(myTimer);
+      } else if(!ctrl.excutingCommand){
+        ctrl.getFocus();
+      }
+    }, 500);
+    
   }
 
   ifEnter(event): void {
@@ -41,9 +52,13 @@ export class GameInterfaceComponent implements OnInit {
         command.activationStrings.forEach(activationString => {
           if(ctrl.inputText === activationString){
             invalid = false;
+            
+            let direction;
 
-            if(command.name.includes('Walk') || command.name.includes('Run') || command.name.includes('Sneak') ){
-              let direction;
+            if( command.name.includes('Walk') || 
+                command.name.includes('Run') || 
+                command.name.includes('Sneak') ||
+                command.name.includes('Look')){ 
               if(command.name.includes('north')){
                 direction = 'north';
               } else if(command.name.includes('east')){
@@ -53,8 +68,12 @@ export class GameInterfaceComponent implements OnInit {
               } else if(command.name.includes('west')) {
                 direction = 'west';
               }
+            }
 
+            if(command.name.includes('Walk') || command.name.includes('Run') || command.name.includes('Sneak')){
               let noExit = true;
+
+              ctrl.signInService.character.lookDirecion = direction;
 
               ctrl.currentRoomService.room.exits.forEach(exit => {
                 exit.activationCommands.forEach(exitCommand => {
@@ -77,8 +96,12 @@ export class GameInterfaceComponent implements OnInit {
                 console.log('no exit to the ' + direction);
                 ctrl.displayText('There is no exit to the ' + direction);
               }
-            } else if(false){
-              //another command
+
+            } else if(command.name.includes('Look')){
+              ctrl.signInService.character.lookDirecion = direction;
+              ctrl.command = command;
+              ctrl.excutingCommand = true;
+
             } else if(false){
               //another command
             }
@@ -124,22 +147,34 @@ export class GameInterfaceComponent implements OnInit {
       }
 
       if(ctrl.excutingCommand === true){
-        if(ctrl.command.executionTime > 0){
-          ctrl.command.executionTime = ctrl.command.executionTime -1
-          ctrl.replaceLastText(ctrl.command.executingText + ' ... ' + ctrl.command.executionTime.toString());
+        if(ctrl.command.executingTime > 0){
+          ctrl.command.executingTime = ctrl.command.executingTime -1
+          ctrl.replaceLastText(ctrl.command.executingText + ' ... ' + ctrl.command.executingTime.toString());
           
-          let addInfoText = ctrl.signInService.character.name + ' is ' + ctrl.command.executingText + ' ... ' + ctrl.command.executionTime.toString();
-          let arr = [ctrl.signInService.character.id, addInfoText];
-          ctrl.socket.emit('update additional info', arr);
+          let addInfoText = ctrl.signInService.character.name + ' is ' + ctrl.command.executingText + ' ... ' + ctrl.command.executingTime.toString();
+          
+          let object = {
+            id: ctrl.signInService.character.id,
+            text: addInfoText,
+            socketCall: ctrl.command.socketCall
+          }
+          
+          ctrl.socket.emit('update additional info', object);
         }else{
           ctrl.replaceLastText('You ' + ctrl.command.completedText);
 
           ctrl.socket.emit(ctrl.command.socketCall, ctrl.signInService.character);
           
-          let arr = [ctrl.signInService.character.id, ctrl.signInService.character.name + ' ' + ctrl.command.completedText]
-          ctrl.socket.emit('update additional info', arr);
+          let object = {
+            id: ctrl.signInService.character.id,
+            text: ctrl.signInService.character.name + ' ' + ctrl.command.completedText,
+            socketCall: ctrl.command.socketCall
+          }
+          
+          ctrl.socket.emit('update additional info', object);
 
           ctrl.excutingCommand = false;
+          ctrl.command.executingTime = ctrl.command.executionTime;
         }
       }
 
@@ -171,6 +206,10 @@ export class GameInterfaceComponent implements OnInit {
 
   executingCheck(): boolean{
     return this.excutingCommand;
+  }
+
+  getFocus = function () {
+      document.getElementById("input").focus();
   }
 
 }

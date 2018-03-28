@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SignInService } from '../../../sign-in.service';
 import { PlayerListService } from '../../../player-list.service';
+import { CurrentRoomService } from '../../../current-room.service';
 
 @Component({
   selector: 'game-details',
@@ -17,10 +18,16 @@ export class GameDetailsComponent implements OnInit {
   roomList;
   playerCount;
 
-  constructor(private signInService:SignInService, private playerListService:PlayerListService) { }
+  roomName;
+  roomDescription;
+
+  constructor(private signInService:SignInService, 
+              private playerListService:PlayerListService,
+              private currentRoomService:CurrentRoomService) { }
 
   ngOnInit() {
     const ctrl = this;
+
     this.getCountOfUsers();
     this.updateRoomLists();
 
@@ -32,6 +39,12 @@ export class GameDetailsComponent implements OnInit {
 
     this.socket.on('set up player list', function(list){
       ctrl.playerListService.playerList = list;
+    });
+
+    this.socket.on('the room', function(room){
+      ctrl.currentRoomService.room = room;
+      ctrl.roomName = ctrl.currentRoomService.room.name;
+      ctrl.roomDescription = ctrl.currentRoomService.room.description;
     });
   }
 
