@@ -17,6 +17,11 @@ export class GameInterfaceComponent implements OnInit {
   @Input() characterName;
   @Input() inputText;
 
+  showStats;
+  showGameInfo;
+  showStats2;
+  showGameInfo2;
+
   constructor(private signInService:SignInService, 
               private currentRoomService:CurrentRoomService, 
               private playerListService:PlayerListService){}
@@ -24,6 +29,12 @@ export class GameInterfaceComponent implements OnInit {
   ngOnInit(): void {
     const ctrl = this;
     
+    this.showStats = true;
+    this.showGameInfo = false;
+
+    this.showStats2 = false;
+    this.showGameInfo2 = true;
+
     this.updateGame();
     this.recieveText();
     this.buildRoom();
@@ -142,9 +153,6 @@ export class GameInterfaceComponent implements OnInit {
     const ctrl = this;
 
     this.socket.on('updateGame', function(data){
-      if(data !== 'Update Game'){
-        ctrl.displayText(data);
-      }
 
       if(ctrl.excutingCommand === true){
         if(ctrl.command.executingTime > 0){
@@ -158,8 +166,18 @@ export class GameInterfaceComponent implements OnInit {
             text: addInfoText,
             socketCall: ctrl.command.socketCall
           }
-          
           ctrl.socket.emit('update additional info', object);
+
+          if(ctrl.command.executionTime === ctrl.command.executingTime+1){
+            
+            let sound = {
+              range: ctrl.command.soundValue,
+              length: ctrl.command.executionTime,
+              originId: ctrl.currentRoomService.room.id
+            }
+            ctrl.socket.emit('made a sound', sound);
+          }
+
         }else{
           ctrl.replaceLastText('You ' + ctrl.command.completedText);
 
@@ -177,7 +195,6 @@ export class GameInterfaceComponent implements OnInit {
           ctrl.command.executingTime = ctrl.command.executionTime;
         }
       }
-
     });
   }
 
@@ -212,4 +229,33 @@ export class GameInterfaceComponent implements OnInit {
       document.getElementById("input").focus();
   }
 
+  switch1(){
+    this.showStats = true;
+    this.showGameInfo = false;
+  }
+
+  switch2(){
+    this.showStats = false;
+    this.showGameInfo = true;
+  }
+
+  switch3(){
+    this.showStats = false;
+    this.showGameInfo = false;
+  }
+
+  switch4(){
+    this.showStats2 = true;
+    this.showGameInfo2 = false;
+  }
+
+  switch5(){
+    this.showStats2 = false;
+    this.showGameInfo2 = true;
+  }
+
+  switch6(){
+    this.showStats2 = false;
+    this.showGameInfo2 = false;
+  }
 }

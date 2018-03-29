@@ -21,6 +21,11 @@ export class GameDetailsComponent implements OnInit {
   roomName;
   roomDescription;
 
+  showPlayerList;
+  showRoom;
+  showPlayerList2;
+  showRoom2;
+
   constructor(private signInService:SignInService, 
               private playerListService:PlayerListService,
               private currentRoomService:CurrentRoomService) { }
@@ -30,6 +35,12 @@ export class GameDetailsComponent implements OnInit {
 
     this.getCountOfUsers();
     this.updateRoomLists();
+
+    this.showPlayerList = false;
+    this.showRoom = true;
+
+    this.showPlayerList2 = false;
+    this.showRoom2 = false;
 
     this.socket.on('player list', function(list){
       ctrl.playerList = list;
@@ -63,6 +74,36 @@ export class GameDetailsComponent implements OnInit {
       ctrl.playerListService.updateRoomList();
       ctrl.roomList = ctrl.playerListService.playersInRoomList;
     });
+  }
+
+  switch1(){
+    this.showRoom = true;
+    this.showPlayerList = false;
+  }
+
+  switch2(){
+    this.showRoom = false;
+    this.showPlayerList = true;
+  }
+
+  switch3(){
+    this.showRoom = false;
+    this.showPlayerList = false;
+  }
+
+  switch4(){
+    this.showRoom2 = true;
+    this.showPlayerList2 = false;
+  }
+
+  switch5(){
+    this.showRoom2 = false;
+    this.showPlayerList2 = true;
+  }
+
+  switch6(){
+    this.showRoom2 = false;
+    this.showPlayerList2 = false;
   }
 
 }

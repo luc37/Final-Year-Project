@@ -2,13 +2,12 @@
   <li *ngFor="let square of squareList">
       <div class="square" id={{square.id}}><div class="content"><div class="table"><div class="table-cell">
          <!--{{square.text}}-->
-          {{square.text}}
          <span *ngIf="(square.id==25 && direction==='north')" class="glyphicon glyphicon-arrow-up"></span>
          <span *ngIf="(square.id==25 && direction==='east')" class="glyphicon glyphicon-arrow-right"></span>
          <span *ngIf="(square.id==25 && direction==='south')" class="glyphicon glyphicon-arrow-down"></span>
          <span *ngIf="(square.id==25 && direction==='west')" class="glyphicon glyphicon-arrow-left"></span>
          <span *ngIf="square.hasPeople" class="glyphicon glyphicon-eye-open"></span>
-
+         <span *ngIf="square.hasSound" class="glyphicon glyphicon-volume-up"></span>
       </div></div></div></div>
   </li>
 </ul>

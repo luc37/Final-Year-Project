@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CurrentRoomService } from '../../../../current-room.service';
 import { SignInService } from '../../../../sign-in.service';
 import { PlayerListService } from '../../../../player-list.service';
+import { AStarSearchService } from '../../../../a-star-search.service';
 
 @Component({
   selector: 'map',
@@ -39,7 +40,8 @@ export class MapComponent implements OnInit {
 
   constructor(private currentRoomService:CurrentRoomService,
               private signInService:SignInService,
-              private playerListService:PlayerListService) { }
+              private playerListService:PlayerListService,
+              private aStarSearchService:AStarSearchService ) { }
 
   ngOnInit() {
     const ctrl = this;
@@ -48,7 +50,8 @@ export class MapComponent implements OnInit {
       let square = {
         text: i.toString(),
         id: i.toString(),
-        hasPeople: false
+        hasPeople: false,
+        hasSound: false
       }
       this.squareList.push(square);
     }
@@ -69,6 +72,7 @@ export class MapComponent implements OnInit {
         room = ctrl.mapList[cRoom + (16*j) + (-3+(i%7))];    
         square.text = (room).toString();
         square.hasPeople = false;
+        square.hasSound = false;
       });
 
       ctrl.socket.emit('colour ui map', null);
@@ -84,6 +88,7 @@ export class MapComponent implements OnInit {
 
       ctrl.squareList.forEach(function(square){
         square.hasPeople = false;
+        square.hasSound = false;
       });
 
       ctrl.squareList.forEach(function(square){
@@ -162,31 +167,48 @@ export class MapComponent implements OnInit {
         });
       });
 
-      let nSquare = ctrl.squareList[24-7];
-      let nSquare2 = ctrl.squareList[24-14];
-      let nSquare3 = ctrl.squareList[24-21];
+      let nSquare = ctrl.squareList[17];
+      let nSquare2 = ctrl.squareList[10];
+      let nSquare3 = ctrl.squareList[3];
       let nRoom, nRoom2, nRoom3;
 
-      let eSquare = ctrl.squareList[24+1];
-      let eSquare2 = ctrl.squareList[24+2];
-      let eSquare3 = ctrl.squareList[24+3];
+      let eSquare = ctrl.squareList[25];
+      let eSquare2 = ctrl.squareList[26];
+      let eSquare3 = ctrl.squareList[27];
       let eRoom, eRoom2, eRoom3;
 
-      let sSquare = ctrl.squareList[24+7];
-      let sSquare2 = ctrl.squareList[24+14];
-      let sSquare3 = ctrl.squareList[24+21];
+      let sSquare = ctrl.squareList[31];
+      let sSquare2 = ctrl.squareList[38];
+      let sSquare3 = ctrl.squareList[45];
       let sRoom, sRoom2, sRoom3;
 
-      let wSquare = ctrl.squareList[24-1];
-      let wSquare2 = ctrl.squareList[24-2];
-      let wSquare3 = ctrl.squareList[24-3];
+      let wSquare = ctrl.squareList[23];
+      let wSquare2 = ctrl.squareList[22];
+      let wSquare3 = ctrl.squareList[21];
       let wRoom, wRoom2, wRoom3;
 
-      let neSquare = ctrl.squareList[24-6];
-      let seSquare = ctrl.squareList[24+8];
-      let swSquare = ctrl.squareList[24+6];
-      let nwSquare = ctrl.squareList[24-8];
+      let neSquare = ctrl.squareList[18];
+      let seSquare = ctrl.squareList[32];
+      let swSquare = ctrl.squareList[30];
+      let nwSquare = ctrl.squareList[16];
       let neRoom, seRoom, swRoom, nwRoom;
+
+      let nneSquare = ctrl.squareList[11];
+      let neeSquare = ctrl.squareList[19];
+      let nneRoom, neeRoom;
+
+      let seeSquare = ctrl.squareList[33];
+      let sseSquare = ctrl.squareList[39];
+      let seeRoom, sseRoom;
+
+      let sswSquare = ctrl.squareList[37];
+      let swwSquare = ctrl.squareList[29];
+      let sswRoom, swwRoom;
+
+      let nwwSquare = ctrl.squareList[15];
+      let nnwSquare = ctrl.squareList[9];
+      let nwwRoom, nnwRoom;
+      
 
       map.forEach(room => {
         if(room.position.toString() === nSquare.text){    nRoom = room;     }
@@ -205,188 +227,175 @@ export class MapComponent implements OnInit {
         if(room.position.toString() === seSquare.text){   seRoom = room;    }
         if(room.position.toString() === swSquare.text){   swRoom = room;    }
         if(room.position.toString() === nwSquare.text){   nwRoom = room;    }
+        if(room.position.toString() === nneSquare.text){   nneRoom = room;    }
+        if(room.position.toString() === neeSquare.text){   neeRoom = room;    }
+        if(room.position.toString() === seeSquare.text){   seeRoom = room;    }
+        if(room.position.toString() === sseSquare.text){   sseRoom = room;    }
+        if(room.position.toString() === sswSquare.text){   sswRoom = room;    }
+        if(room.position.toString() === swwSquare.text){   swwRoom = room;    }
+        if(room.position.toString() === nwwSquare.text){   nwwRoom = room;    }
+        if(room.position.toString() === nnwSquare.text){   nnwRoom = room;    }
       });
 
       let lookD = ctrl.signInService.character.lookDirecion;
 
-      if(cRoom.northBoundary.allowsVisibility === 1 && nRoom !== undefined && lookD != 'south'){
-        if(nRoom.southBoundary.allowsVisibility === 1){
-          document.getElementById(nSquare.id).style.background = "lightgreen";
+      ctrl.findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, 
+                              'northBoundary', 'southBoundary', 'south');
 
-          ctrl.visibleSquares.push(nSquare);
-          ctrl.visibleRooms.push(nRoom);
+      ctrl.findStraightSights(ctrl, cRoom, eRoom, eRoom2, eRoom3, eSquare, eSquare2, eSquare3, lookD, 
+                              'eastBoundary', 'westBoundary', 'west');
 
-          if(nRoom.northBoundary.allowsVisibility === 1 && nRoom2 !== undefined){
-            if(nRoom2.southBoundary.allowsVisibility === 1){
-              document.getElementById(nSquare2.id).style.background = "lightgreen";
+      ctrl.findStraightSights(ctrl, cRoom, sRoom, sRoom2, sRoom3, sSquare, sSquare2, sSquare3, lookD, 
+                              'southBoundary', 'northBoundary', 'north');
+                              
+      ctrl.findStraightSights(ctrl, cRoom, wRoom, wRoom2, wRoom3, wSquare, wSquare2, wSquare3, lookD, 
+                              'westBoundary', 'eastBoundary', 'east');
 
-              ctrl.visibleSquares.push(nSquare2);
-              ctrl.visibleRooms.push(nRoom2);
-    
-              if(nRoom2.northBoundary.allowsVisibility === 1 && nRoom3 !== undefined){
-                if(nRoom3.southBoundary.allowsVisibility === 1){
-                  document.getElementById(nSquare3.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, nSquare, eSquare, nRoom, eRoom, neRoom, neSquare, 
+                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
 
-                  ctrl.visibleSquares.push(nSquare3);
-                  ctrl.visibleRooms.push(nRoom3);
-                }
-              }  
-            }
-          }          
-        }
-      }
+      ctrl.findOtherSights(ctrl, sSquare, eSquare, sRoom, eRoom, seRoom, seSquare, 
+                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-      if(cRoom.eastBoundary.allowsVisibility === 1 && eRoom !== undefined && lookD != 'west'){
-        if(eRoom.westBoundary.allowsVisibility === 1){
-          document.getElementById(eSquare.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, sSquare, wSquare, sRoom, wRoom, swRoom, swSquare, 
+                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-          ctrl.visibleSquares.push(eSquare);
-          ctrl.visibleRooms.push(eRoom);
+      ctrl.findOtherSights(ctrl, nSquare, wSquare, nRoom, wRoom, nwRoom, nwSquare, 
+                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
+                          
+      ctrl.findOtherSights(ctrl, nSquare2, neSquare, nRoom2, neRoom, nneRoom, nneSquare, 
+                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
+                          
+      ctrl.findOtherSights(ctrl, neSquare, eSquare2, neRoom, eRoom2, neeRoom, neeSquare, 
+                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
 
-          if(eRoom.eastBoundary.allowsVisibility === 1 && eRoom2 !== undefined){
-            if(eRoom2.westBoundary.allowsVisibility === 1){
-              document.getElementById(eSquare2.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, seSquare, eSquare2, seRoom, eRoom2, seeRoom, seeSquare, 
+                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-              ctrl.visibleSquares.push(eSquare2);
-              ctrl.visibleRooms.push(eRoom2);
-    
-              if(eRoom2.eastBoundary.allowsVisibility === 1 && eRoom3 !== undefined){
-                if(eRoom3.westBoundary.allowsVisibility === 1){
-                  document.getElementById(eSquare3.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, sSquare2, seSquare, sRoom2, seRoom, sseRoom, sseSquare, 
+                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-                  ctrl.visibleSquares.push(eSquare3);
-                  ctrl.visibleRooms.push(eRoom3);
-                }
-              }  
-            }
-          }          
-        }
-      }
+      ctrl.findOtherSights(ctrl, sSquare2, swSquare, sRoom2, swRoom, sswRoom, sswSquare, 
+                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-      if(cRoom.southBoundary.allowsVisibility === 1 && sRoom !== undefined && lookD != 'north'){
-        if(sRoom.northBoundary.allowsVisibility === 1){
-          document.getElementById(sSquare.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, swSquare, wSquare2, swRoom, wRoom2, swwRoom, swwSquare, 
+                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-          ctrl.visibleSquares.push(sSquare);
-          ctrl.visibleRooms.push(sRoom);
+      ctrl.findOtherSights(ctrl, nwSquare, wSquare2, nwRoom, wRoom2, nwwRoom, nwwSquare, 
+                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
 
-          if(sRoom.southBoundary.allowsVisibility === 1 && sRoom2 !== undefined){
-            if(sRoom2.northBoundary.allowsVisibility === 1){
-              document.getElementById(sSquare2.id).style.background = "lightgreen";
+      ctrl.findOtherSights(ctrl, nSquare2, nwSquare, nRoom2, nwRoom, nnwRoom, nnwSquare, 
+                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');      
 
-              ctrl.visibleSquares.push(sSquare2);
-              ctrl.visibleRooms.push(sRoom2);
-    
-              if(sRoom2.southBoundary.allowsVisibility === 1 && sRoom3 !== undefined){
-                if(sRoom3.northBoundary.allowsVisibility === 1){
-                  document.getElementById(sSquare3.id).style.background = "lightgreen";
-
-                  ctrl.visibleSquares.push(sSquare3);
-                  ctrl.visibleRooms.push(sRoom3);
-                }
-              }  
-            }
-          }          
-        }
-      }
-
-      if(cRoom.westBoundary.allowsVisibility === 1 && wRoom !== undefined && lookD != 'east'){
-        if(wRoom.eastBoundary.allowsVisibility === 1){
-          document.getElementById(wSquare.id).style.background = "lightgreen";
-
-          ctrl.visibleSquares.push(wSquare);
-          ctrl.visibleRooms.push(wRoom);
-
-          if(wRoom.westBoundary.allowsVisibility === 1 && wRoom2 !== undefined){
-            if(wRoom2.eastBoundary.allowsVisibility === 1){
-              document.getElementById(wSquare2.id).style.background = "lightgreen";
-
-              ctrl.visibleSquares.push(wSquare2);
-              ctrl.visibleRooms.push(wRoom2);
-    
-              if(wRoom2.westBoundary.allowsVisibility === 1 && wRoom3 !== undefined){
-                if(wRoom3.eastBoundary.allowsVisibility === 1){
-                  document.getElementById(wSquare3.id).style.background = "lightgreen";
-
-                  ctrl.visibleSquares.push(wSquare3);
-                  ctrl.visibleRooms.push(wRoom3);
-                }
-              }  
-            }
-          }          
-        }
-      }
-
-      if(document.getElementById(nSquare.id).style.background === "lightgreen" && 
-         document.getElementById(eSquare.id).style.background === "lightgreen"){
-
-          if(nRoom.eastBoundary.allowsVisibility === 1 &&
-             eRoom.northBoundary.allowsVisibility === 1 &&
-             neRoom.westBoundary.allowsVisibility === 1 &&
-             neRoom.southBoundary.allowsVisibility === 1){
-              document.getElementById(neSquare.id).style.background = "lightgreen";
-
-              ctrl.visibleSquares.push(neSquare);
-              ctrl.visibleRooms.push(neRoom);
-          }
-      }
-
-      if(document.getElementById(sSquare.id).style.background === "lightgreen" && 
-         document.getElementById(eSquare.id).style.background === "lightgreen"){
-
-          if(sRoom.eastBoundary.allowsVisibility === 1 &&
-            eRoom.southBoundary.allowsVisibility === 1 &&
-            seRoom.westBoundary.allowsVisibility === 1 &&
-            seRoom.northBoundary.allowsVisibility === 1){
-              document.getElementById(seSquare.id).style.background = "lightgreen";
-
-              ctrl.visibleSquares.push(seSquare);
-              ctrl.visibleRooms.push(seRoom);
-         }
-      }
-
-      if(document.getElementById(sSquare.id).style.background === "lightgreen" && 
-         document.getElementById(wSquare.id).style.background === "lightgreen"){
-          
-          if(sRoom.westBoundary.allowsVisibility === 1 &&
-            wRoom.southBoundary.allowsVisibility === 1 &&
-            swRoom.eastBoundary.allowsVisibility === 1 &&
-            swRoom.northBoundary.allowsVisibility === 1){
-              document.getElementById(swSquare.id).style.background = "lightgreen";
-
-              ctrl.visibleSquares.push(swSquare);
-              ctrl.visibleRooms.push(swRoom);
-         }
-      }
-
-      if(document.getElementById(nSquare.id).style.background === "lightgreen" && 
-         document.getElementById(wSquare.id).style.background === "lightgreen"){
-          
-          if(nRoom.westBoundary.allowsVisibility === 1 &&
-            wRoom.northBoundary.allowsVisibility === 1 &&
-            nwRoom.eastBoundary.allowsVisibility === 1 &&
-            nwRoom.southBoundary.allowsVisibility === 1){
-              document.getElementById(nwSquare.id).style.background = "lightgreen";
-
-              ctrl.visibleSquares.push(nwSquare);
-              ctrl.visibleRooms.push(nwRoom);
-         }
-      }
 
       ctrl.visibleRooms.forEach(function(room, i){
         ctrl.playerListService.playerList.forEach(character => {
           if(room !== undefined){
             if(character.roomId === room.id && character.id !== ctrl.signInService.character.id){
               ctrl.visibleSquares[i].hasPeople = true;
-              console.log(room.id);
-              console.log(character.roomId);
-              console.log(ctrl.visibleSquares);
             }
           }
         });
       });
-
     });
+
+    this.socket.on('update sounds', function(sounds){
+      ctrl.squareList.forEach(function(square){
+        sounds.forEach(sound => {
+          if(sound.originId.toString() === square.text){
+
+              square.hasSound = ctrl.checkLoudness(square);
+
+              let origin = Number(square.id) -1;
+
+              let route = ctrl.aStarSearchService.aStarSearch(origin, 24, ctrl.map, ctrl.squareList);
+          }
+        });
+      });
+    });
+  }
+
+  findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, n, s, opp){
+
+    if(cRoom[n].allowsVisibility === 1 && nRoom !== undefined && lookD != opp){
+      if(nRoom[s].allowsVisibility === 1){
+        document.getElementById(nSquare.id).style.background = "lightgreen";
+
+        ctrl.visibleSquares.push(nSquare);
+        ctrl.visibleRooms.push(nRoom);
+
+        if(nRoom[n].allowsVisibility === 1 && nRoom2 !== undefined){
+          if(nRoom2[s].allowsVisibility === 1){
+            document.getElementById(nSquare2.id).style.background = "lightgreen";
+
+            ctrl.visibleSquares.push(nSquare2);
+            ctrl.visibleRooms.push(nRoom2);
+  
+            if(nRoom2[n].allowsVisibility === 1 && nRoom3 !== undefined){
+              if(nRoom3[s].allowsVisibility === 1){
+                document.getElementById(nSquare3.id).style.background = "lightgreen";
+
+                ctrl.visibleSquares.push(nSquare3);
+                ctrl.visibleRooms.push(nRoom3);
+              }
+            }  
+          }
+        }          
+      }
+    }
+  }
+
+  findOtherSights(ctrl, nSquare, eSquare, nRoom, eRoom, neRoom, neSquare, b1, b2, b3, b4){
+    if(document.getElementById(nSquare.id).style.background === "lightgreen" && 
+         document.getElementById(eSquare.id).style.background === "lightgreen"){
+
+          if(nRoom[b1].allowsVisibility === 1 &&
+             eRoom[b2].allowsVisibility === 1 &&
+             neRoom[b3].allowsVisibility === 1 &&
+             neRoom[b4].allowsVisibility === 1){
+              document.getElementById(neSquare.id).style.background = "lightgreen";
+
+              ctrl.visibleSquares.push(neSquare);
+              ctrl.visibleRooms.push(neRoom);
+          }
+      }
+  }
+
+  checkLoudness(square){
+    let bool = false;
+    let zone = 0;
+    
+    if(square.id === 0 || square.id === 5  || square.id === 35 || square.id === 41 ||
+       square.id === 1 || square.id === 6  || square.id === 42 || square.id === 47 ||
+       square.id === 7 || square.id === 13 || square.id === 43 || square.id === 48 ) { 
+         zone = 5; 
+    }
+
+    if(square.id === 2  || square.id === 4  || square.id === 34 || square.id === 28 ||
+       square.id === 8  || square.id === 12 || square.id === 40 || square.id === 36 ||
+       square.id === 14 || square.id === 20 || square.id === 46 || square.id === 44 ) { 
+        zone = 4; 
+    }
+  
+    if(square.id === 3  || square.id === 27 || square.id === 45 || square.id === 21 ||
+       square.id === 11 || square.id === 33 || square.id === 37 || square.id === 15 ||
+       square.id === 19 || square.id === 39 || square.id === 29 || square.id === 9 ) { 
+       zone = 3; 
+    }
+
+    if(square.id === 10 || square.id === 26 || square.id === 38 || square.id === 22 ||
+       square.id === 18 || square.id === 32 || square.id === 30 || square.id === 16) { 
+      zone = 2; 
+    }
+
+    if(square.id === 17 || square.id === 25 || square.id === 31 || square.id === 23 || square.id === 24) { 
+     zone = 1; 
+    }
+
+
+    bool = true;
+
+    return bool;
   }
 
   ngAfterViewInit(){

@@ -8,21 +8,52 @@
 
 <div class="container-fluid">
     <div class="panel panel-default shadows">
-        <div class="panel-body">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active" (click)="switch1()">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> Room
+            </label>
+            <label class="btn btn-secondary" (click)="switch2()">
+                <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{playerCount}} )
+            </label>
+            <label class="btn btn-secondary" (click)="switch3()">
+                <input type="radio" name="options" id="option3" autocomplete="off"> Close
+            </label>
+        </div>
+
+        <div class="panel-body" *ngIf="showRoom">
             <h5>In {{roomName}} : <i>{{roomDescription}}</i></h5>
             <hr>
             <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
+        </div>
+
+        <div class="panel-body" *ngIf="showPlayerList">
+            <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
         </div>
     </div>
 </div>
 
 <div class="container-fluid">
         <div class="panel panel-default shadows">
-            <div class="panel-body" >
-                <h5>Players Online : {{playerCount}} : {{connectionCount}}</h5>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary" (click)="switch4()">
+                    <input type="radio" name="options" id="option1" autocomplete="off"> Room
+                </label>
+                <label class="btn btn-secondary" (click)="switch5()">
+                    <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{playerCount}}) 
+                </label>
+                <label class="btn btn-secondary active" (click)="switch6()">
+                    <input type="radio" name="options" id="option3" autocomplete="off" checked> Close
+                </label>
+            </div>
+    
+            <div class="panel-body" *ngIf="showRoom2">
+                <h5>In {{roomName}} : <i>{{roomDescription}}</i></h5>
                 <hr>
+                <ul><li *ngFor="let character of roomList">{{character.name}}</li></ul>
+            </div>
+    
+            <div class="panel-body" *ngIf="showPlayerList2">
                 <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
             </div>
         </div>
     </div>
-

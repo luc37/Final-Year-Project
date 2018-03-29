@@ -15,17 +15,62 @@
 
 <div class="container-fluid">
     <div class="panel panel-default shadows">
-        <div class="panel-body">
-            <h4>{{this.characterName}}</h4>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active" (click)="switch1()">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> {{this.signInService.character.name}}
+            </label>
+            <label class="btn btn-secondary" (click)="switch2()">
+                <input type="radio" name="options" id="option2" autocomplete="off"> GameEvents
+            </label>
+            <label class="btn btn-secondary" (click)="switch3()">
+                <input type="radio" name="options" id="option3" autocomplete="off"> Close
+            </label>
         </div>
-    </div>
-</div>
 
-<div class="container-fluid">
-    <div class="panel panel-default shadows">
-        <div class="panel-body">
+        <div class="panel-body" *ngIf="showStats">
+            <ul>
+                <li>Health : {{this.signInService.character.health}}</li>
+                <li>Smell : {{this.signInService.character.smell}}</li>
+                <li>Sound : {{this.signInService.character.sound}}</li>
+                <li>Bullets : {{this.signInService.character.bullets}}</li>
+                <li>Gun Power : {{this.signInService.character.gunPower}}</li>
+                <li>Reload : {{this.signInService.character.reload}}</li>
+            </ul>
+        </div>
+
+        <div class="panel-body" *ngIf="showGameInfo">
             <additional-info [socket]="socket"></additional-info>
         </div>
     </div>
 </div>
 
+<div class="container-fluid">
+        <div class="panel panel-default shadows">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary" (click)="switch4()">
+                    <input type="radio" name="options" id="option1" autocomplete="off"> {{this.signInService.character.name}}
+                </label>
+                <label class="btn btn-secondary active" (click)="switch5()">
+                    <input type="radio" name="options" id="option2" autocomplete="off" checked> GameEvents
+                </label>
+                <label class="btn btn-secondary" (click)="switch6()">
+                    <input type="radio" name="options" id="option3" autocomplete="off"> Close
+                </label>
+            </div>
+    
+            <div class="panel-body" *ngIf="showStats2">
+                <ul>
+                    <li>Health : {{this.signInService.character.health}}</li>
+                    <li>Smell : {{this.signInService.character.smell}}</li>
+                    <li>Sound : {{this.signInService.character.sound}}</li>
+                    <li>Bullets : {{this.signInService.character.bullets}}</li>
+                    <li>Gun Power : {{this.signInService.character.gunPower}}</li>
+                    <li>Reload : {{this.signInService.character.reload}}</li>
+                </ul>
+            </div>
+    
+            <div class="panel-body" *ngIf="showGameInfo2">
+                <additional-info [socket]="socket"></additional-info>
+            </div>
+        </div>
+    </div>

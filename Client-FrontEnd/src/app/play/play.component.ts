@@ -43,6 +43,14 @@ export class PlayComponent implements OnInit {
         ctrl.signInService.character.isChar = data.isChar;
         ctrl.signInService.character.roomId = data.roomId;
         ctrl.signInService.character.lookDirecion = data.lookDirection;
+        ctrl.signInService.character.smell = data.smell;
+        ctrl.signInService.character.sound = data.sound;
+        ctrl.signInService.character.health = data.health;
+        ctrl.signInService.character.bullets = data.bullets;
+        ctrl.signInService.character.gunPower = data.gunPower;
+        ctrl.signInService.character.reload = data.reload;
+
+        console.log(ctrl.signInService.character);
 
         ctrl.socket.emit('resetPlayScreenPage', data);
       });

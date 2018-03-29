@@ -2,6 +2,7 @@ const database = require('../database/connect-database');
 
 const room = require('../Locations/Room');
 const map = require('../Game/Map');
+const sound = require('../Game/Sound');
 
 const mapHeight = 10;
 const mapWidth = 10;
@@ -25,6 +26,14 @@ const game = {
 
         socket.on('move to room', function(character){
             theGame.buildRoom(character, socket, io);
+        });
+
+        socket.on('made a sound', function(theSound){
+            newSound = Object.create(sound);
+            newSound.build(theSound.range, theSound.length, theSound.originId);
+
+            theGame.addSound(newSound);
+            io.emit('update sounds', theGame.sounds);
         });
 
         socket.on('switch tabs', function(character){
@@ -58,7 +67,7 @@ const game = {
             if(object.socketCall === 'move to room'){
                 socket.broadcast.emit('update additional info', object);
             } else{
-                object.text = 'nope!!!'
+                object.text = 'different socket call'
                 socket.broadcast.emit('update additional info', object);
             }
             
@@ -88,7 +97,17 @@ const game = {
         }
     },
     run: function(io){
-        io.emit('updateGame', 'Update Game');
+        let ctrl = this;
+
+        this.sounds.forEach(function(sound, i){
+            if(sound.length === 0){
+                ctrl.removeSound(i);
+            } else{
+                sound.length = sound.length -1;
+            }
+        });
+
+        io.emit('updateGame', 'update game');
     },
     intoduceNewPlayer: function(socket){
         socket.emit('updateGame', 'Welcome to the Game...');
@@ -167,9 +186,16 @@ const game = {
     buildArea: function(){
 
     },
+    addSound: function(sound){
+        this.sounds.push(sound);
+    },
+    removeSound: function(i){
+        this.sounds.splice(i, 1);
+    },
     startRoomId: 0,
     activePlayerList:[],
-    map:[]
+    map:[],
+    sounds:[]
 }
 
 function setUpPlayScreen(socket, io){

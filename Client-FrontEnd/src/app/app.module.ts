@@ -16,6 +16,7 @@ import { CurrentRoomService } from './current-room.service';
 import { PlayerListService } from './player-list.service';
 import { AdditionalInfoComponent } from './play/play-screen/game-details/additional-info/additional-info.component';
 import { MapComponent } from './play/play-screen/game-details/map/map.component';
+import { AStarSearchService } from './a-star-search.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { MapComponent } from './play/play-screen/game-details/map/map.component'
     FormsModule,
     AppRoutingModule
   ],
-  providers: [SignInService, CurrentRoomService, PlayerListService],
+  providers: [SignInService, CurrentRoomService, PlayerListService, AStarSearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

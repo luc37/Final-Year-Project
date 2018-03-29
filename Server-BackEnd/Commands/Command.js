@@ -1,6 +1,7 @@
 const command = {
     build: function(activationStrings, description, name, exeTime, executingText, 
-                    completedText, socketCall, executingTime, dependantSocketCalls){
+                    completedText, socketCall, executingTime, dependantSocketCalls,
+                    loudness){
         this.name = name;
         this.description = description;
         this.activationStrings = activationStrings;
@@ -10,6 +11,7 @@ const command = {
         this.socketCall = socketCall;
         this.executingTime = executingTime;
         this.dependantSocketCalls = dependantSocketCalls;
+        this.loudness = loudness;
     },
     activationStrings: [],
     description: '',
@@ -18,7 +20,8 @@ const command = {
     executingText: '',
     completedText: '',
     socketCall: '',
-    dependantSocketCalls: []
+    dependantSocketCalls: [],
+    loudness: 0,
 }
 
 module.exports = command;
