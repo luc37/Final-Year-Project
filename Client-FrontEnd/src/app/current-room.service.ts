@@ -15,7 +15,11 @@ export class CurrentRoomService {
     northBoundary: null,
     eastBoundary: null,
     southBoundary: null,
-    westBoundary: null
+    westBoundary: null,
+    circuit: null,
+    lit: null,
+    objects: null,
+    lights: null
   }
 
 }

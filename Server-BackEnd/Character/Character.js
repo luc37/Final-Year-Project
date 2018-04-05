@@ -8,20 +8,27 @@ function buildCommandList(){
 }
 
 const character = {
-    build: function(name, id, isChar, socketId, roomId, lookDirection){
-        this.name = name;
-        this.id = id;
+    build: function(row, isChar, socketId){
+        this.name = row.characterName;
+        this.id = row.characterId;
         this.isChar = isChar;
         this.commandList = buildCommandList();
         this.socketId = socketId;
-        this.roomId = roomId;
-        this.lookDirection = lookDirection;
-        this.smell = 0;
+        this.roomId = row.roomId;
+        this.lookDirection = row.lookDirection;
+        this.smell = row.smell;
         this.sound = 0;
-        this.health = 10;
-        this.bullets = 8;
-        this.gunPower = 2;
+        this.health = row.health;
+        this.bullets = row.bullets;
+        this.gunPower = row.gunPower;
         this.reload = 3;
+        this.aim = row.aim;
+        this.inventory = [];
+        this.clumsiness = row.clumsiness;
+        this.maxHealth = row.maxhealth;
+    },
+    buildInventory: function(array){
+        this.inventory = array;
     },
     name: '',
     id: 0,
@@ -36,9 +43,10 @@ const character = {
     bullets: 0,
     gunPower: 0,
     reload: 0,
-    moveToNewRoom: function(){
-        console.log('move room function');
-    }
+    aim: 0,
+    inventory: [],
+    clumsiness: 0,
+    maxHealth:10
 }
 
 module.exports = character;

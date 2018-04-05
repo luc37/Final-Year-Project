@@ -1,101 +1,101 @@
-id,name,description,areaId,position,northBoundary,eastBoundary,southBoundary,westBoundary
-1,John's Biscuits,John's biscuit shop.,1,1,1,2,3,4
-2,John's Biscuits,John's biscuit shop.,1,2,5,6,7,8
-3,John's Biscuits,The backroom.,1,3,9,10,11,12
-4,Bill's Burgers,Bills's Burger Shop.,1,4,13,14,15,16
-5,Bill's Burgers,The backroom.,1,5,17,18,19,20
-6,Hackle House,The gallery.,1,6,21,22,23,24
-7,Hackle House,The gallery.,1,7,25,26,27,28
-8,Hackle House,The gallery.,1,8,29,30,31,32
-9,Hackle House,The gallery.,1,9,33,34,35,36
-10,Outer Wall,Outer wall.,1,10,37,38,39,40
-11,Grease Row,A street.  Grease Row.,1,11,41,42,43,44
-12,Grease Row,A street.  Grease Row.,1,12,45,46,47,48
-13,Grease Row,A street.  Grease Row.,1,13,49,50,51,52
-14,Grease Row,A street.  Grease Row.,1,14,53,54,55,56
-15,Grease Row,A street.  Grease Row.,1,15,57,58,59,60
-16,Hackle House,The cloakroom.,1,16,61,62,63,64
-17,Hackle House,The boardroom.,1,17,65,66,67,68
-18,Hackle House,The boardroom.,1,18,69,70,71,72
-19,Hackle House,The boardroom.,1,19,73,74,75,76
-20,Outer Wall,Outer wall.,1,20,77,78,79,80
-21,Warehouse,Main floor.,1,21,81,82,83,84
-22,Warehouse,Main floor.,1,22,85,86,87,88
-23,Warehouse,Main floor.,1,23,89,90,91,92
-24,Warehouse,Main floor.,1,24,93,94,95,96
-25,Warehouse,A storeroom.,1,25,97,98,99,100
-26,Hackle House,The cloakroom.,1,26,101,102,103,104
-27,Hackle House,The cloakroom.,1,27,105,106,107,108
-28,Hackle House,The boardroom.,1,28,109,110,111,112
-29,Hackle House,The boardroom.,1,29,113,114,115,116
-30,Outer Wall,Outer wall.,1,30,117,118,119,120
-31,Warehouse ,Main floor.,1,31,121,122,123,124
-32,Warehouse ,Main floor.,1,32,125,126,127,128
-33,Warehouse ,Main floor.,1,33,129,130,131,132
-34,Warehouse ,Main floor.,1,34,133,134,135,136
-35,Warehouse,a storeroom.,1,35,137,138,139,140
-36,Stabbers Alley,Alleyway.,1,36,141,142,143,144
-37,Stabbers Alley,Alleyway end.,1,37,145,146,147,148
-38,Barn,Yard.,1,38,149,150,151,152
-39,Barn,Yard.,1,39,153,154,155,156
-40,Outer Wall,Outer wall.,1,40,157,158,159,160
-41,Warehouse ,Main floor.,1,41,161,162,163,164
-42,Warehouse ,Main floor.,1,42,165,166,167,168
-43,Warehouse ,Main floor.,1,43,169,170,171,172
-44,Warehouse ,Main floor.,1,44,173,174,175,176
-45,Warehouse,A storeroom.,1,45,177,178,179,180
-46,Stabbers Alley,Alleyway.,1,46,181,182,183,184
-47,Barn,Barn.,1,47,185,186,187,188
-48,Barn,Yard.,1,48,189,190,191,192
-49,Barn,Yard.,1,49,193,194,195,196
-50,Outer Wall,Outer wall.,1,50,197,198,199,200
-51,Warehouse ,Main floor.,1,51,201,202,203,204
-52,Warehouse ,Main floor.,1,52,205,206,207,208
-53,Warehouse ,Main floor.,1,53,209,210,211,212
-54,Warehouse ,Main floor.,1,54,213,214,215,216
-55,Warehouse,A storeroom.,1,55,217,218,219,220
-56,Stabbers Alley,Alleyway.,1,56,221,222,223,224
-57,Barn,Barn.,1,57,225,226,227,228
-58,Barn,Yard.,1,58,229,230,231,232
-59,Barn,Yard.,1,59,233,234,235,236
-60,Outer Wall,Outer wall.,1,60,237,238,239,240
-61,Warehouse,A storeroom.,1,61,241,242,243,244
-62,Warehouse,Main floor.,1,62,245,246,247,248
-63,Warehouse,Main floor.,1,63,249,250,251,252
-64,Warehouse,Main floor.,1,64,253,254,255,256
-65,Stabbers Alley,Alleyway.,1,65,257,258,259,260
-66,Stabbers Alley,Alleyway.,1,66,261,262,263,264
-67,Barn,Barn.,1,67,265,266,267,268
-68,Barn,Yard.,1,68,269,270,271,272
-69,Barn,Out house.,1,69,273,274,275,276
-70,Outer Wall,Outer wall.,1,70,277,278,279,280
-71,Warehouse,Office.,1,71,281,282,283,284
-72,Warehouse,Office.,1,72,285,286,287,288
-73,Warehouse,Office.,1,73,289,290,291,292
-74,Stabbers Alley,Alleyway.,1,74,293,294,295,296
-75,Stabbers Alley,Alleyway.,1,75,297,298,299,300
-76,Ral House,Study.,1,76,301,302,303,304
-77,Ral House,Kitchen.,1,77,305,306,307,308
-78,Barn,Yard.,1,78,309,310,311,312
-79,Barn,Out house.,1,79,313,314,315,316
-80,Outer Wall,Guardhouse.,1,80,317,318,319,320
-81,Warehouse,Front Yard.,1,81,321,322,323,324
-82,Warehouse,Office.,1,82,325,326,327,328
-83,Warehouse,Office.,1,83,329,330,331,332
-84,Stabbers Alley,Alleyway.,1,84,333,334,335,336
-85,Shack,Abandoned shack.,1,85,337,338,339,340
-86,Ral House,Bedroom.,1,86,341,342,343,344
-87,Ral House,Front room.,1,87,345,346,347,348
-88,Garden,Garden.,1,88,349,350,351,352
-89,Barn,Out house.,1,89,353,354,355,356
-90,Outer Wall,Outer wall.,1,90,357,358,359,360
-91,Outer Wall,Outer wall.,1,91,361,362,363,364
-92,Outer Wall,Outer wall.,1,92,365,366,367,368
-93,Outer Wall,Outer wall.,1,93,369,370,371,372
-94,Outer Wall,Outer wall.,1,94,373,374,375,376
-95,Outer Wall,Outer wall.,1,95,377,378,379,380
-96,Outer Wall,Outer wall.,1,96,381,382,383,384
-97,Outer Wall,Outer wall.,1,97,385,386,387,388
-98,Outer Wall,Outer wall.,1,98,389,390,391,392
-99,Outer Wall,Outer wall.,1,99,393,394,395,396
-100,Outer Wall,Outer wall.,1,100,397,398,399,400
+id,name,description,areaId,position,northBoundary,eastBoundary,southBoundary,westBoundary,circuit
+1,John's Biscuits,John's biscuit shop.,1,1,1,2,3,4,1
+2,John's Biscuits,John's biscuit shop.,1,2,5,6,7,8,1
+3,John's Biscuits,The backroom.,1,3,9,10,11,12,2
+4,Bill's Burgers,Bills's Burger Shop.,1,4,13,14,15,16,3
+5,Bill's Burgers,The backroom.,1,5,17,18,19,20,4
+6,Hackle House,The gallery.,1,6,21,22,23,24,5
+7,Hackle House,The gallery.,1,7,25,26,27,28,5
+8,Hackle House,The gallery.,1,8,29,30,31,32,5
+9,Hackle House,The gallery.,1,9,33,34,35,36,5
+10,Outer Wall,Outer wall.,1,10,37,38,39,40,-1
+11,Grease Row,A street.  Grease Row.,1,11,41,42,43,44,-1
+12,Grease Row,A street.  Grease Row.,1,12,45,46,47,48,-1
+13,Grease Row,A street.  Grease Row.,1,13,49,50,51,52,-1
+14,Grease Row,A street.  Grease Row.,1,14,53,54,55,56,-1
+15,Grease Row,A street.  Grease Row.,1,15,57,58,59,60,-1
+16,Hackle House,The cloakroom.,1,16,61,62,63,64,6
+17,Hackle House,The boardroom.,1,17,65,66,67,68,7
+18,Hackle House,The boardroom.,1,18,69,70,71,72,7
+19,Hackle House,The boardroom.,1,19,73,74,75,76,7
+20,Outer Wall,Outer wall.,1,20,77,78,79,80,-1
+21,Warehouse,Main floor.,1,21,81,82,83,84,8
+22,Warehouse,Main floor.,1,22,85,86,87,88,8
+23,Warehouse,Main floor.,1,23,89,90,91,92,8
+24,Warehouse,Main floor.,1,24,93,94,95,96,8
+25,Warehouse,A storeroom.,1,25,97,98,99,100,9
+26,Hackle House,The cloakroom.,1,26,101,102,103,104,6
+27,Hackle House,The cloakroom.,1,27,105,106,107,108,6
+28,Hackle House,The boardroom.,1,28,109,110,111,112,7
+29,Hackle House,The boardroom.,1,29,113,114,115,116,7
+30,Outer Wall,Outer wall.,1,30,117,118,119,120,-1
+31,Warehouse ,Main floor.,1,31,121,122,123,124,8
+32,Warehouse ,Main floor.,1,32,125,126,127,128,8
+33,Warehouse ,Main floor.,1,33,129,130,131,132,8
+34,Warehouse ,Main floor.,1,34,133,134,135,136,8
+35,Warehouse,a storeroom.,1,35,137,138,139,140,10
+36,Stabbers Alley,Alleyway.,1,36,141,142,143,144,-1
+37,Stabbers Alley,Alleyway end.,1,37,145,146,147,148,-1
+38,Barn,Yard.,1,38,149,150,151,152,-1
+39,Barn,Yard.,1,39,153,154,155,156,-1
+40,Outer Wall,Outer wall.,1,40,157,158,159,160,-1
+41,Warehouse ,Main floor.,1,41,161,162,163,164,8
+42,Warehouse ,Main floor.,1,42,165,166,167,168,8
+43,Warehouse ,Main floor.,1,43,169,170,171,172,8
+44,Warehouse ,Main floor.,1,44,173,174,175,176,8
+45,Warehouse,A storeroom.,1,45,177,178,179,180,11
+46,Stabbers Alley,Alleyway.,1,46,181,182,183,184,-1
+47,Barn,Barn.,1,47,185,186,187,188,12
+48,Barn,Yard.,1,48,189,190,191,192,-1
+49,Barn,Yard.,1,49,193,194,195,196,-1
+50,Outer Wall,Outer wall.,1,50,197,198,199,200,-1
+51,Warehouse ,Main floor.,1,51,201,202,203,204,8
+52,Warehouse ,Main floor.,1,52,205,206,207,208,8
+53,Warehouse ,Main floor.,1,53,209,210,211,212,8
+54,Warehouse ,Main floor.,1,54,213,214,215,216,8
+55,Warehouse,A storeroom.,1,55,217,218,219,220,13
+56,Stabbers Alley,Alleyway.,1,56,221,222,223,224,-1
+57,Barn,Barn.,1,57,225,226,227,228,12
+58,Barn,Yard.,1,58,229,230,231,232,-1
+59,Barn,Yard.,1,59,233,234,235,236,-1
+60,Outer Wall,Outer wall.,1,60,237,238,239,240,-1
+61,Warehouse,A storeroom.,1,61,241,242,243,244,14
+62,Warehouse,Main floor.,1,62,245,246,247,248,8
+63,Warehouse,Main floor.,1,63,249,250,251,252,8
+64,Warehouse,Main floor.,1,64,253,254,255,256,8
+65,Stabbers Alley,Alleyway.,1,65,257,258,259,260,-1
+66,Stabbers Alley,Alleyway.,1,66,261,262,263,264,-1
+67,Barn,Barn.,1,67,265,266,267,268,12
+68,Barn,Yard.,1,68,269,270,271,272,-1
+69,Barn,Out house.,1,69,273,274,275,276,15
+70,Outer Wall,Outer wall.,1,70,277,278,279,280,-1
+71,Warehouse,Office.,1,71,281,282,283,284,16
+72,Warehouse,Office.,1,72,285,286,287,288,16
+73,Warehouse,Office.,1,73,289,290,291,292,16
+74,Stabbers Alley,Alleyway.,1,74,293,294,295,296,-1
+75,Stabbers Alley,Alleyway.,1,75,297,298,299,300,-1
+76,Ral House,Study.,1,76,301,302,303,304,17
+77,Ral House,Kitchen.,1,77,305,306,307,308,18
+78,Barn,Yard.,1,78,309,310,311,312,-1
+79,Barn,Out house.,1,79,313,314,315,316,15
+80,Outer Wall,Guardhouse.,1,80,317,318,319,320,20
+81,Warehouse,Front Yard.,1,81,321,322,323,324,-1
+82,Warehouse,Office.,1,82,325,326,327,328,16
+83,Warehouse,Office.,1,83,329,330,331,332,16
+84,Stabbers Alley,Alleyway.,1,84,333,334,335,336,-1
+85,Shack,Abandoned shack.,1,85,337,338,339,340,-1
+86,Ral House,Bedroom.,1,86,341,342,343,344,18
+87,Ral House,Front room.,1,87,345,346,347,348,19
+88,Garden,Garden.,1,88,349,350,351,352,-1
+89,Barn,Out house.,1,89,353,354,355,356,15
+90,Outer Wall,Outer wall.,1,90,357,358,359,360,-1
+91,Outer Wall,Outer wall.,1,91,361,362,363,364,-1
+92,Outer Wall,Outer wall.,1,92,365,366,367,368,-1
+93,Outer Wall,Outer wall.,1,93,369,370,371,372,-1
+94,Outer Wall,Outer wall.,1,94,373,374,375,376,-1
+95,Outer Wall,Outer wall.,1,95,377,378,379,380,-1
+96,Outer Wall,Outer wall.,1,96,381,382,383,384,-1
+97,Outer Wall,Outer wall.,1,97,385,386,387,388,-1
+98,Outer Wall,Outer wall.,1,98,389,390,391,392,-1
+99,Outer Wall,Outer wall.,1,99,393,394,395,396,-1
+100,Outer Wall,Outer wall.,1,100,397,398,399,400,-1

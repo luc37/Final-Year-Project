@@ -15,6 +15,17 @@ const room = {
         this.southBoundary = row.southBoundary,
         this.westBoundary = row.westBoundary;
         this.position = row.position;
+        this.circuit = row.circuit;
+        this.lit = true;
+    },
+    setObjects: function(objects){
+        this.objects = objects;
+    },
+    addObject: function(object){
+        this.objects.push(object);
+    },
+    setLights: function(lights){
+        this.lights = lights;
     },
     addExits: function(exits){
         this.exits = exits;
@@ -104,7 +115,11 @@ const room = {
     northBoundary: 0,
     eastBoundary: 0,
     southBoundary: 0,
-    westBoundary: 0
+    westBoundary: 0,
+    circuit: 0,
+    objects: [],
+    lights:[],
+    lit: true
 }
 
 module.exports = room;

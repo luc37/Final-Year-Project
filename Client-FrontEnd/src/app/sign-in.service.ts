@@ -12,13 +12,18 @@ export class SignInService {
     socketId: null,
     isChar: null,
     roomId: null,
-    lookDirecion: null,
+    lookDirection: null,
     smell: null,
     sound: null,
     health: null,
     bullets: null,
     gunPower: null,
-    reload: null
+    reload: null,
+    aim: null,
+    inventory: [],
+    clumsiness: null,
+    visiblePlayers: [],
+    maxHealth: null
   }
 
 

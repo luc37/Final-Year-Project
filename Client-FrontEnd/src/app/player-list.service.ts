@@ -6,8 +6,8 @@ export class PlayerListService {
 
   constructor(private signInService:SignInService) {}
 
-  playerList;
-  playersInRoomList;
+  playerList = [];
+  playersInRoomList = [];
 
   updateRoomList(): void{
     const ctrl = this;

@@ -2,6 +2,15 @@ const walkCommand = require('./Walk');
 const runCommand = require('./Run');
 const sneakCommand = require('./Sneak');
 const command = require('./Command');
+const shootCommand = require('./Shoot');
+const toggleLights = require('./LightCommand');
+const searchCommand = require('./Search');
+const hideCommand = require('./Hide');
+const turnOnCommand = require('./TurnOn');
+const turnOffCommand = require('./TurnOff');
+const pickUpCommand = require('./PickUp');
+const dropCommand = require('./Drop');
+const eatCommand = require('./Eat');
 
 const commandList = {
     build: function(list){
@@ -93,6 +102,72 @@ const commandList = {
         MoveCommandBuilder('West', 'west', 'W', 'w', lookWest, 'Look ', 'look ', 'looking ', 'looked ', 
         'look direction', 0, 0, true, ["lw"], null, 0);                
         theList.push(lookWest);
+
+        let shootTarget = Object.create(shootCommand);
+        shootTarget.build(['shoot ', 'Shoot '], 'Shoot at someone', 'Shoot', 2, 'aiming at ', 
+        'shot at ', 'shoot target', 2, null, 12);
+        shootTarget.setTarget(0);
+        theList.push(shootTarget);
+
+        let lights = Object.create(toggleLights);
+        lights.build(['light on', 'lights on', 'Lights on', 'Turn lights on', 'turn lights on',
+                    'light off', 'lights off', 'Lights off', 'Turn lights off', 'turn lights off',],
+                    'Toggle lights', 'Lights', 1, 'turning lights ', 'turned lights ', 'toggle lights',
+                    1, null, 0);
+        lights.setStatus(0);
+        theList.push(lights);
+
+        let search = Object.create(searchCommand);
+        search.build(['search ', 'search the ', 'search a ', 'Search ', 'Search the ', 'Search a '],
+                    'search something', 'Search', 4, 'searching ', 'searched ', 'search item',
+                    4, null, 4);
+        search.setTarget(0);
+        theList.push(search);
+
+        let hide = Object.create(hideCommand);
+        hide.build(['hide ', 'hide in ', 'hide behind ', 'hide under ', 
+                    'Hide ', 'Hide in ', 'Hide behind ', 'Hide under '],
+                    'hide somewhere', 'Hide', 4, 'hiding ', 'hid ', 'hide somewhere',
+                    4, null, 0);
+        hide.setStatus(0);
+        hide.setTarget(0);
+        theList.push(hide);
+
+        let turnOn = Object.create(turnOnCommand);
+        turnOn.build(['turn on ', 'turn on the ', 'turn on my ', 'Turn on the ',  'Turn on my ', 'Turn on '],
+                    'turn something on', 'Turn on', 1, 'turning on ', 'turned on ', 'turn item on',
+                    1, null, 1);
+        turnOn.setTarget(0);
+        theList.push(turnOn);
+
+        let turnOff = Object.create(turnOffCommand);
+        turnOff.build(['turn off ', 'turn off the ', 'turn off my ', 'Turn off the ',  'Turn off my ', 'Turn off '],
+                    'turn something off', 'Turn off', 1, 'turning off ', 'turned off ', 'turn item off',
+                    1, null, 1);
+        turnOff.setTarget(0);
+        theList.push(turnOff);
+
+        let pickUp = Object.create(pickUpCommand);
+        pickUp.build(['pick up ', 'pick up the ', 'pick up my ', 'Pick up the ',  'Pick up my ', 'Pick up '],
+                    'pick something up', 'Pick Up', 2, 'picking up ', 'picked up ', 'pick up item',
+                    2, null, 1);
+        pickUp.setTarget(0);
+        theList.push(pickUp);
+
+        let drop = Object.create(dropCommand);
+        drop.build(['drop ', 'drop the ', 'drop my ', 'Drop the ',  'Drop my ', 'Drop '],
+                    'Drop something', 'Drop', 2, 'dropping ', 'dropped ', 'drop item',
+                    2, null, 1);
+        drop.setTarget(0);
+        theList.push(drop);
+
+        let eat = Object.create(eatCommand);
+        eat.build(['eat ', 'eat the ', 'eat my ', 'Eat the ',  'Eat my ', 'Eat ', 'eat some ', 'Eat some ',
+                  'eat a ', 'eat an ', 'Eat a ', 'Eat an '],
+                    'Eat something', 'Eat', 3, 'munching on ', 'ate ', 'eat item',
+                    3, null, 1);
+        eat.setTarget(0);
+        theList.push(eat);
 
         return theList;
     },

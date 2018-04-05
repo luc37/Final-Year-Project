@@ -51,12 +51,15 @@ export class MapComponent implements OnInit {
         text: i.toString(),
         id: i.toString(),
         hasPeople: false,
-        hasSound: false
+        hasSound: false,
+        hasSmell: false
       }
       this.squareList.push(square);
     }
 
     this.socket.on('the room', function(data){
+
+      console.log(data);
 
       let cRoom = ctrl.mapList.indexOf(ctrl.currentRoomService.room.position);
 
@@ -81,7 +84,7 @@ export class MapComponent implements OnInit {
     this.socket.on('colour ui map', function(map){
       ctrl.map = map;
       let cRoom;
-      ctrl.direction = ctrl.signInService.character.lookDirecion;
+      ctrl.direction = ctrl.signInService.character.lookDirection;
 
       ctrl.visibleRooms = [];
       ctrl.visibleSquares = [];
@@ -111,6 +114,14 @@ export class MapComponent implements OnInit {
 
         map.forEach(room => {
           if(square.text === room.position.toString()){
+
+            if(square.id === '25'){
+              ctrl.currentRoomService.room = room;
+            }
+
+            if(room.lit === false && square.id !== '25'){
+              document.getElementById(square.id).style.background = "#566573";
+            }
 
             if(room.northBoundary.allowsVisibility === 1){
               if(room.northBoundary.allowsAccess === 0){
@@ -237,7 +248,7 @@ export class MapComponent implements OnInit {
         if(room.position.toString() === nnwSquare.text){   nnwRoom = room;    }
       });
 
-      let lookD = ctrl.signInService.character.lookDirecion;
+      let lookD = ctrl.signInService.character.lookDirection;
 
       ctrl.findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, 
                               'northBoundary', 'southBoundary', 'south');
@@ -288,11 +299,16 @@ export class MapComponent implements OnInit {
                           'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');      
 
 
+      ctrl.signInService.character.visiblePlayers = []; 
+      ctrl.visibleRooms.push(cRoom);
+      ctrl.visibleSquares.push(ctrl.squareList[24]);
+
       ctrl.visibleRooms.forEach(function(room, i){
         ctrl.playerListService.playerList.forEach(character => {
           if(room !== undefined){
             if(character.roomId === room.id && character.id !== ctrl.signInService.character.id){
               ctrl.visibleSquares[i].hasPeople = true;
+              ctrl.signInService.character.visiblePlayers.push(character);
             }
           }
         });
@@ -301,14 +317,33 @@ export class MapComponent implements OnInit {
 
     this.socket.on('update sounds', function(sounds){
       ctrl.squareList.forEach(function(square){
+        square.hasSound = false;
         sounds.forEach(sound => {
           if(sound.originId.toString() === square.text){
 
-              square.hasSound = ctrl.checkLoudness(square);
+            let origin = Number(square.id) -1;
+            let route = ctrl.aStarSearchService.aStarSearch(origin, 24, ctrl.map, ctrl.squareList);
 
-              let origin = Number(square.id) -1;
+            square.hasSound = ctrl.checkLoudness(square, route, sound);
 
-              let route = ctrl.aStarSearchService.aStarSearch(origin, 24, ctrl.map, ctrl.squareList);
+            //console.log(route);
+          }
+        });
+      });
+    });
+
+    this.socket.on('update smells', function(playerList){
+      ctrl.squareList.forEach(function(square){
+        square.hasSmell = false;
+        playerList.forEach(player => {
+          if(player.roomId.toString() === square.text){
+
+            let origin = Number(square.id) -1;
+            let route = ctrl.aStarSearchService.aStarSearch(origin, 24, ctrl.map, ctrl.squareList);
+
+            square.hasSmell = ctrl.checkSmell(square, route, player);
+
+            //console.log(route);
           }
         });
       });
@@ -318,21 +353,21 @@ export class MapComponent implements OnInit {
   findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, n, s, opp){
 
     if(cRoom[n].allowsVisibility === 1 && nRoom !== undefined && lookD != opp){
-      if(nRoom[s].allowsVisibility === 1){
+      if(nRoom[s].allowsVisibility === 1 && nRoom.lit){
         document.getElementById(nSquare.id).style.background = "lightgreen";
 
         ctrl.visibleSquares.push(nSquare);
         ctrl.visibleRooms.push(nRoom);
 
         if(nRoom[n].allowsVisibility === 1 && nRoom2 !== undefined){
-          if(nRoom2[s].allowsVisibility === 1){
+          if(nRoom2[s].allowsVisibility === 1 && nRoom2.lit){
             document.getElementById(nSquare2.id).style.background = "lightgreen";
 
             ctrl.visibleSquares.push(nSquare2);
             ctrl.visibleRooms.push(nRoom2);
   
             if(nRoom2[n].allowsVisibility === 1 && nRoom3 !== undefined){
-              if(nRoom3[s].allowsVisibility === 1){
+              if(nRoom3[s].allowsVisibility === 1 && nRoom3.lit){
                 document.getElementById(nSquare3.id).style.background = "lightgreen";
 
                 ctrl.visibleSquares.push(nSquare3);
@@ -361,39 +396,26 @@ export class MapComponent implements OnInit {
       }
   }
 
-  checkLoudness(square){
+  checkLoudness(square, route, sound){
     let bool = false;
-    let zone = 0;
     
-    if(square.id === 0 || square.id === 5  || square.id === 35 || square.id === 41 ||
-       square.id === 1 || square.id === 6  || square.id === 42 || square.id === 47 ||
-       square.id === 7 || square.id === 13 || square.id === 43 || square.id === 48 ) { 
-         zone = 5; 
+    if(route !== 'no path'){
+      if(route.distance <= sound.loudness){
+        bool = true;
+      }
     }
 
-    if(square.id === 2  || square.id === 4  || square.id === 34 || square.id === 28 ||
-       square.id === 8  || square.id === 12 || square.id === 40 || square.id === 36 ||
-       square.id === 14 || square.id === 20 || square.id === 46 || square.id === 44 ) { 
-        zone = 4; 
-    }
-  
-    if(square.id === 3  || square.id === 27 || square.id === 45 || square.id === 21 ||
-       square.id === 11 || square.id === 33 || square.id === 37 || square.id === 15 ||
-       square.id === 19 || square.id === 39 || square.id === 29 || square.id === 9 ) { 
-       zone = 3; 
-    }
+    return bool;
+  }
 
-    if(square.id === 10 || square.id === 26 || square.id === 38 || square.id === 22 ||
-       square.id === 18 || square.id === 32 || square.id === 30 || square.id === 16) { 
-      zone = 2; 
+  checkSmell(square, route, player){
+    let bool = false;
+    
+    if(route !== 'no path'){
+      if(route.distance <= player.smell && player.smell !== 0){
+        bool = true;
+      }
     }
-
-    if(square.id === 17 || square.id === 25 || square.id === 31 || square.id === 23 || square.id === 24) { 
-     zone = 1; 
-    }
-
-
-    bool = true;
 
     return bool;
   }

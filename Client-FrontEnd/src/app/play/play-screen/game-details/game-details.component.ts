@@ -23,8 +23,10 @@ export class GameDetailsComponent implements OnInit {
 
   showPlayerList;
   showRoom;
+  showVisiblePlayers;
   showPlayerList2;
   showRoom2;
+  showVisiblePlayers2;
 
   constructor(private signInService:SignInService, 
               private playerListService:PlayerListService,
@@ -41,6 +43,9 @@ export class GameDetailsComponent implements OnInit {
 
     this.showPlayerList2 = false;
     this.showRoom2 = false;
+
+    this.showVisiblePlayers = false;
+    this.showVisiblePlayers = false;
 
     this.socket.on('player list', function(list){
       ctrl.playerList = list;
@@ -79,31 +84,49 @@ export class GameDetailsComponent implements OnInit {
   switch1(){
     this.showRoom = true;
     this.showPlayerList = false;
+    this.showVisiblePlayers = false;
   }
 
   switch2(){
     this.showRoom = false;
     this.showPlayerList = true;
+    this.showVisiblePlayers = false;
+  }
+
+  switch7(){
+    this.showRoom = false;
+    this.showPlayerList = false;
+    this.showVisiblePlayers = true;
   }
 
   switch3(){
     this.showRoom = false;
     this.showPlayerList = false;
+    this.showVisiblePlayers = false;
   }
 
   switch4(){
     this.showRoom2 = true;
     this.showPlayerList2 = false;
+    this.showVisiblePlayers2 = false;
   }
 
   switch5(){
     this.showRoom2 = false;
     this.showPlayerList2 = true;
+    this.showVisiblePlayers2 = false;
   }
 
   switch6(){
     this.showRoom2 = false;
     this.showPlayerList2 = false;
+    this.showVisiblePlayers2 = false;
+  }
+
+  switch8(){
+    this.showRoom2 = false;
+    this.showPlayerList2 = false;
+    this.showVisiblePlayers2 = true;
   }
 
 }

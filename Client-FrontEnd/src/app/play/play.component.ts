@@ -42,13 +42,17 @@ export class PlayComponent implements OnInit {
         ctrl.signInService.character.socketId = data.socketId;
         ctrl.signInService.character.isChar = data.isChar;
         ctrl.signInService.character.roomId = data.roomId;
-        ctrl.signInService.character.lookDirecion = data.lookDirection;
+        ctrl.signInService.character.lookDirection = data.lookDirection;
         ctrl.signInService.character.smell = data.smell;
         ctrl.signInService.character.sound = data.sound;
         ctrl.signInService.character.health = data.health;
         ctrl.signInService.character.bullets = data.bullets;
         ctrl.signInService.character.gunPower = data.gunPower;
         ctrl.signInService.character.reload = data.reload;
+        ctrl.signInService.character.aim = data.aim;
+        ctrl.signInService.character.inventory = data.inventory;
+        ctrl.signInService.character.clumsiness = data.clumsiness;
+        ctrl.signInService.character.maxHealth = data.maxHealth;
 
         console.log(ctrl.signInService.character);
 
@@ -57,6 +61,7 @@ export class PlayComponent implements OnInit {
 
       this.socket.on('create character', function(data){
         ctrl.characterCreated = true;
+        ctrl.socket.emit('checkSignIn', data);
       });
     }
   }

@@ -10,10 +10,13 @@
     <div class="panel panel-default shadows">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-secondary active" (click)="switch1()">
-                <input type="radio" name="options" id="option1" autocomplete="off" checked> Room
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> Room ({{this.playerListService.playersInRoomList.length}})
             </label>
             <label class="btn btn-secondary" (click)="switch2()">
-                <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{playerCount}} )
+                <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{this.playerListService.playerList.length}})
+            </label>
+            <label class="btn btn-secondary" (click)="switch7()">
+                <input type="radio" name="options" id="option7" autocomplete="off"> Visible ({{this.signInService.character.visiblePlayers.length}})
             </label>
             <label class="btn btn-secondary" (click)="switch3()">
                 <input type="radio" name="options" id="option3" autocomplete="off"> Close
@@ -29,6 +32,10 @@
         <div class="panel-body" *ngIf="showPlayerList">
             <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
         </div>
+
+        <div class="panel-body" *ngIf="showVisiblePlayers">
+            <ul><li *ngFor="let player of this.signInService.character.visiblePlayers">{{player.name}}</li></ul>
+        </div>
     </div>
 </div>
 
@@ -36,10 +43,13 @@
         <div class="panel panel-default shadows">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary" (click)="switch4()">
-                    <input type="radio" name="options" id="option1" autocomplete="off"> Room
+                    <input type="radio" name="options" id="option1" autocomplete="off"> Room ({{this.playerListService.playersInRoomList.length}})
                 </label>
                 <label class="btn btn-secondary" (click)="switch5()">
-                    <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{playerCount}}) 
+                    <input type="radio" name="options" id="option2" autocomplete="off"> Online ({{this.playerListService.playerList.length}}) 
+                </label>
+                <label class="btn btn-secondary" (click)="switch8()">
+                    <input type="radio" name="options" id="option8" autocomplete="off"> Visible ({{this.signInService.character.visiblePlayers.length}})
                 </label>
                 <label class="btn btn-secondary active" (click)="switch6()">
                     <input type="radio" name="options" id="option3" autocomplete="off" checked> Close
@@ -55,5 +65,9 @@
             <div class="panel-body" *ngIf="showPlayerList2">
                 <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
             </div>
+
+            <div class="panel-body" *ngIf="showVisiblePlayers2">
+                    <ul><li *ngFor="let player of this.signInService.character.visiblePlayers">{{player.name}}</li></ul>
+                </div>
         </div>
     </div>

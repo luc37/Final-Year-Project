@@ -35,6 +35,9 @@
                 <li>Bullets : {{this.signInService.character.bullets}}</li>
                 <li>Gun Power : {{this.signInService.character.gunPower}}</li>
                 <li>Reload : {{this.signInService.character.reload}}</li>
+                <li>Aim : {{this.signInService.character.aim}}</li>
+                <li>Clumsiness : {{this.signInService.character.clumsiness}}</li>
+                <li>Inventory:</li> <ul><li *ngFor="let item of this.signInService.character.inventory">{{item.name}}</li></ul>
             </ul>
         </div>
 
@@ -66,6 +69,9 @@
                     <li>Bullets : {{this.signInService.character.bullets}}</li>
                     <li>Gun Power : {{this.signInService.character.gunPower}}</li>
                     <li>Reload : {{this.signInService.character.reload}}</li>
+                    <li>Aim : {{this.signInService.character.aim}}</li>
+                    <li>Clumsiness : {{this.signInService.character.clumsiness}}</li>
+                    <li>Inventory:</li> <ul><li *ngFor="let item of this.signInService.character.inventory">{{item.name}}</li></ul>
                 </ul>
             </div>
     

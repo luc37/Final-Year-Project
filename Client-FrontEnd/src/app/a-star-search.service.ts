@@ -6,7 +6,10 @@ export class AStarSearchService {
   constructor() { }
 
   aStarSearch(origin, target, map, squareList): any{
-    let route = [];
+    let route = {
+      route: [target],
+      distance: 0,
+    };
 
     let openList = [];
     let closedList = [];
@@ -15,11 +18,11 @@ export class AStarSearchService {
 
     const ctrl = this;
 
-    console.log(origin);
-    console.log(target);
+    //console.log(origin);
+    //console.log(target);
 
     if(origin === target){
-      console.log('in same place');
+      //console.log('in same place');
       return route;
     }
 
@@ -103,16 +106,9 @@ export class AStarSearchService {
     });   
     
     let parents = this.getParents(nodeList, origin);
-    nodeList.forEach(function(node, i){
-      parents.forEach(function(parent){
-        if(node === parent){
-          node.p =  nodeList[origin];
-          node.g = nodeList[origin].g + mg;
-          node.f = node.g + node.h;
-          openList.push(node);
-        }
-      });
-    }); 
+    if(parents.length === 0){
+      return 'no path';
+    }
 
     let shortestNode = {
       f: 1000,
@@ -120,7 +116,33 @@ export class AStarSearchService {
       id: 0
     };
     let foundTarget = false;
+    let noPath = false;
     let counter = 0;
+
+    //first time check
+    parents.forEach(function(parent){
+      if(parent !== null){
+        if(parent.id === target){
+          foundTarget = true;
+
+          nodeList[target].p = nodeList[origin];
+          nodeList[target].g = 1;
+        }
+      }
+    });
+
+    if(!foundTarget){
+      nodeList.forEach(function(node, i){
+        parents.forEach(function(parent){
+          if(node === parent){
+            node.p =  nodeList[origin];
+            node.g = nodeList[origin].g + mg;
+            node.f = node.g + node.h;
+            openList.push(node);
+          }
+        });
+      }); 
+    }
 
     while(foundTarget === false){
       shortestNode = {
@@ -148,7 +170,7 @@ export class AStarSearchService {
 
       parents.forEach(function(parent){
         if(parent !== null){
-          if(parent.id === target || counter > 50){
+          if(parent.id === target || counter > 20){
             foundTarget = true;
             
             nodeList.forEach(function(node){
@@ -157,7 +179,13 @@ export class AStarSearchService {
                 node.g = shortestNode.g + mg;
               }
             });
-            console.log('done');
+            
+            if(counter < 20){
+              console.log('done');
+            } else {
+              noPath = true;
+            }
+            
           }
         }
       });
@@ -182,48 +210,90 @@ export class AStarSearchService {
       counter++;
     }
 
+    if(!noPath){
+      nodeList.forEach(function(node){
+        if(node.p !== 0){
+          //console.log('node : ' + node.id + ', g : ' + node.g + ' - parent : ' + node.p.id + ', g :' + node.p.g);
+        }
+      });
+  
+      nodeList.forEach(function(node){
+        if(node.id === target){
+          route.distance = node.g;
+          ctrl.getRoute(route, target, nodeList, origin);
+        }
+      });
+    }
+    
+    if(!noPath){
+      return route;
+    } else {
+      return 'no path';
+    }
+    
+  }
+
+  getRoute(route, target, nodeList, origin):void{
+    const ctrl = this;
+    let parent;
+
     nodeList.forEach(function(node){
-      if(node.p !== 0){
-        console.log('node : ' + node.id + ', g : ' + node.g + ' - parent : ' + node.p.id + ', g :' + node.p.g);
+      if(node.id === target){
+        route.route.push(node.p.id);
+        parent = node.p.id;
       }
     });
 
-    //console.log(shortestNode);
-    //console.log(parents);
-    //console.log(parentals);
-    //console.log(openList);
-    //console.log(closedList);
-    //console.log(nodeList);
-
-    return route;
+    if(parent !== origin){
+      nodeList.forEach(function(node){
+        if(node.id === parent){
+          ctrl.getRoute(route, parent, nodeList, origin);
+        }
+      });
+    }
   }
 
   getParents(nodeList, origin): any{
     let parents = [];
+    let selectedNode;
+
+    nodeList.forEach(node => {
+      if(origin === node.id){
+        selectedNode = node;
+      }
+    });
 
     nodeList.forEach(function(node, i){
       
       if(origin - 7 > -1){
         if(origin - 7 === i){
-          parents.push(node);
+          if(selectedNode.north === 1 && node.south === 1){
+            parents.push(node);
+          }
         }
       }
 
       if(origin % 7 !== 6){
         if(origin + 1 === i){
-          parents.push(node);
+          if(selectedNode.east === 1 && node.west === 1){
+            parents.push(node);
+          }
         }
       }
 
       if(origin + 7 < 49){
         if(origin + 7 === i){
-          parents.push(node);
+          if(selectedNode.south === 1 && node.north === 1){
+            parents.push(node);
+          }
         }
       }
 
       if(origin % 7 !== 0){
         if(origin - 1 === i){
-          parents.push(node);
+          if(selectedNode.west === 1 && node.east === 1){
+            parents.push(node);
+          }
         }
       }
     });
