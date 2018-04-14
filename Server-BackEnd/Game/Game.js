@@ -996,7 +996,7 @@ function explosion(theGame){
                     }
                 });
 
-                let q1 = 'update Boundary set allowsSound = ' + room.northBoundary.allowsSound;
+                let q1 = 'update boundary set allowsSound = ' + room.northBoundary.allowsSound;
                 let q2 = ', allowsVisibility = ' + room.northBoundary.allowsVisibility;
                 let q3 = ', allowsAccess = ' + room.northBoundary.allowsAccess;
                 let q4 = ', allowsSmell = ' + room.northBoundary.allowsSmell;
@@ -1007,7 +1007,7 @@ function explosion(theGame){
                     }
                 });
 
-                q1 = 'update Boundary set allowsSound = ' + room.eastBoundary.allowsSound;
+                q1 = 'update boundary set allowsSound = ' + room.eastBoundary.allowsSound;
                 q2 = ', allowsVisibility = ' + room.eastBoundary.allowsVisibility;
                 q3 = ', allowsAccess = ' + room.eastBoundary.allowsAccess;
                 q4 = ', allowsSmell = ' + room.eastBoundary.allowsSmell;
@@ -1018,7 +1018,7 @@ function explosion(theGame){
                     }
                 });
 
-                q1 = 'update Boundary set allowsSound = ' + room.southBoundary.allowsSound;
+                q1 = 'update boundary set allowsSound = ' + room.southBoundary.allowsSound;
                 q2 = ', allowsVisibility = ' + room.southBoundary.allowsVisibility;
                 q3 = ', allowsAccess = ' + room.southBoundary.allowsAccess;
                 q4 = ', allowsSmell = ' + room.southBoundary.allowsSmell;
@@ -1029,7 +1029,7 @@ function explosion(theGame){
                     }
                 });
 
-                q1 = 'update Boundary set allowsSound = ' + room.westBoundary.allowsSound;
+                q1 = 'update boundary set allowsSound = ' + room.westBoundary.allowsSound;
                 q2 = ', allowsVisibility = ' + room.westBoundary.allowsVisibility;
                 q3 = ', allowsAccess = ' + room.westBoundary.allowsAccess;
                 q4 = ', allowsSmell = ' + room.westBoundary.allowsSmell;
