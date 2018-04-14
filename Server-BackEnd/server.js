@@ -13,8 +13,12 @@ const database = require('./database/connect-database');
 const manageSignIn = require('./sign-in/check-sign-in');
 const game = require('./Game/Game');
 const createCharacter = require('./sign-in/create-character');
+const map = require('./Game/Map');
 
 let theGame;
+
+const mapHeight = 10;
+const mapWidth = 10;
 
 console.log('server running ... ');
 
@@ -24,7 +28,13 @@ database.connection.query('SELECT * from game where startRoomId = 1', function(e
 	}else{
 		console.log('database connected');
 		theGame = Object.create(game);
-		theGame.build(rows[0].startRoomId);
+		theGame.build(rows[0].startRoomId, io);
+
+		let theMap = Object.create(map);
+        theMap.build(theGame, mapWidth, mapHeight, true);
+
+		theGame.setUpOutlaws(5);
+		theGame.setUpOverlord();
 
 		setInterval(function() {
 			theGame.run(io);

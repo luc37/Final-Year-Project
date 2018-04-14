@@ -59,8 +59,6 @@ export class MapComponent implements OnInit {
 
     this.socket.on('the room', function(data){
 
-      console.log(data);
-
       let cRoom = ctrl.mapList.indexOf(ctrl.currentRoomService.room.position);
 
       let j = -4;
@@ -250,63 +248,64 @@ export class MapComponent implements OnInit {
 
       let lookD = ctrl.signInService.character.lookDirection;
 
-      ctrl.findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, 
-                              'northBoundary', 'southBoundary', 'south');
+      if(ctrl.signInService.character.hiding === false){
+        ctrl.findStraightSights(ctrl, cRoom, nRoom, nRoom2, nRoom3, nSquare, nSquare2, nSquare3, lookD, 
+                                'northBoundary', 'southBoundary', 'south');
 
-      ctrl.findStraightSights(ctrl, cRoom, eRoom, eRoom2, eRoom3, eSquare, eSquare2, eSquare3, lookD, 
-                              'eastBoundary', 'westBoundary', 'west');
+        ctrl.findStraightSights(ctrl, cRoom, eRoom, eRoom2, eRoom3, eSquare, eSquare2, eSquare3, lookD, 
+                                'eastBoundary', 'westBoundary', 'west');
 
-      ctrl.findStraightSights(ctrl, cRoom, sRoom, sRoom2, sRoom3, sSquare, sSquare2, sSquare3, lookD, 
-                              'southBoundary', 'northBoundary', 'north');
-                              
-      ctrl.findStraightSights(ctrl, cRoom, wRoom, wRoom2, wRoom3, wSquare, wSquare2, wSquare3, lookD, 
-                              'westBoundary', 'eastBoundary', 'east');
+        ctrl.findStraightSights(ctrl, cRoom, sRoom, sRoom2, sRoom3, sSquare, sSquare2, sSquare3, lookD, 
+                                'southBoundary', 'northBoundary', 'north');
+                                
+        ctrl.findStraightSights(ctrl, cRoom, wRoom, wRoom2, wRoom3, wSquare, wSquare2, wSquare3, lookD, 
+                                'westBoundary', 'eastBoundary', 'east');
 
-      ctrl.findOtherSights(ctrl, nSquare, eSquare, nRoom, eRoom, neRoom, neSquare, 
-                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
+        ctrl.findOtherSights(ctrl, nSquare, eSquare, nRoom, eRoom, neRoom, neSquare, 
+                            'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
 
-      ctrl.findOtherSights(ctrl, sSquare, eSquare, sRoom, eRoom, seRoom, seSquare, 
-                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, sSquare, eSquare, sRoom, eRoom, seRoom, seSquare, 
+                            'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, sSquare, wSquare, sRoom, wRoom, swRoom, swSquare, 
-                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, sSquare, wSquare, sRoom, wRoom, swRoom, swSquare, 
+                            'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, nSquare, wSquare, nRoom, wRoom, nwRoom, nwSquare, 
-                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
-                          
-      ctrl.findOtherSights(ctrl, nSquare2, neSquare, nRoom2, neRoom, nneRoom, nneSquare, 
-                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
-                          
-      ctrl.findOtherSights(ctrl, neSquare, eSquare2, neRoom, eRoom2, neeRoom, neeSquare, 
-                          'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
+        ctrl.findOtherSights(ctrl, nSquare, wSquare, nRoom, wRoom, nwRoom, nwSquare, 
+                            'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
+                            
+        ctrl.findOtherSights(ctrl, nSquare2, neSquare, nRoom2, neRoom, nneRoom, nneSquare, 
+                            'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
+                            
+        ctrl.findOtherSights(ctrl, neSquare, eSquare2, neRoom, eRoom2, neeRoom, neeSquare, 
+                            'eastBoundary', 'northBoundary', 'westBoundary', 'southBoundary');
 
-      ctrl.findOtherSights(ctrl, seSquare, eSquare2, seRoom, eRoom2, seeRoom, seeSquare, 
-                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, seSquare, eSquare2, seRoom, eRoom2, seeRoom, seeSquare, 
+                            'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, sSquare2, seSquare, sRoom2, seRoom, sseRoom, sseSquare, 
-                          'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, sSquare2, seSquare, sRoom2, seRoom, sseRoom, sseSquare, 
+                            'eastBoundary', 'southBoundary', 'westBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, sSquare2, swSquare, sRoom2, swRoom, sswRoom, sswSquare, 
-                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, sSquare2, swSquare, sRoom2, swRoom, sswRoom, sswSquare, 
+                            'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, swSquare, wSquare2, swRoom, wRoom2, swwRoom, swwSquare, 
-                          'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
+        ctrl.findOtherSights(ctrl, swSquare, wSquare2, swRoom, wRoom2, swwRoom, swwSquare, 
+                            'westBoundary', 'southBoundary', 'eastBoundary', 'northBoundary');
 
-      ctrl.findOtherSights(ctrl, nwSquare, wSquare2, nwRoom, wRoom2, nwwRoom, nwwSquare, 
-                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
+        ctrl.findOtherSights(ctrl, nwSquare, wSquare2, nwRoom, wRoom2, nwwRoom, nwwSquare, 
+                            'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');
 
-      ctrl.findOtherSights(ctrl, nSquare2, nwSquare, nRoom2, nwRoom, nnwRoom, nnwSquare, 
-                          'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');      
-
+        ctrl.findOtherSights(ctrl, nSquare2, nwSquare, nRoom2, nwRoom, nnwRoom, nnwSquare, 
+                            'westBoundary', 'northBoundary', 'eastBoundary', 'southBoundary');      
+      }
 
       ctrl.signInService.character.visiblePlayers = []; 
       ctrl.visibleRooms.push(cRoom);
       ctrl.visibleSquares.push(ctrl.squareList[24]);
 
       ctrl.visibleRooms.forEach(function(room, i){
-        ctrl.playerListService.playerList.forEach(character => {
+        ctrl.playerListService.allCharactersList.forEach(character => {
           if(room !== undefined){
-            if(character.roomId === room.id && character.id !== ctrl.signInService.character.id){
+            if(character.roomId === room.id && character.id !== ctrl.signInService.character.id && character.hiding === false){
               ctrl.visibleSquares[i].hasPeople = true;
               ctrl.signInService.character.visiblePlayers.push(character);
             }

@@ -30,7 +30,7 @@
         </div>
 
         <div class="panel-body" *ngIf="showPlayerList">
-            <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
+            <ul><li *ngFor="let player of this.playerListService.playerList">{{player.name}}</li></ul>
         </div>
 
         <div class="panel-body" *ngIf="showVisiblePlayers">
@@ -63,7 +63,7 @@
             </div>
     
             <div class="panel-body" *ngIf="showPlayerList2">
-                <ul><li *ngFor="let player of playerList">{{player.name}}</li></ul>
+                <ul><li *ngFor="let player of this.playerListService.playerList">{{player.name}}</li></ul>
             </div>
 
             <div class="panel-body" *ngIf="showVisiblePlayers2">

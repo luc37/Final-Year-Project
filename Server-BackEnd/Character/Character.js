@@ -26,6 +26,7 @@ const character = {
         this.inventory = [];
         this.clumsiness = row.clumsiness;
         this.maxHealth = row.maxhealth;
+        this.hiding = false;
     },
     buildInventory: function(array){
         this.inventory = array;
@@ -46,7 +47,8 @@ const character = {
     aim: 0,
     inventory: [],
     clumsiness: 0,
-    maxHealth:10
+    maxHealth:10,
+    hiding: false
 }
 
 module.exports = character;

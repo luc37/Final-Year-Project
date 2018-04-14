@@ -181,7 +181,7 @@ export class AStarSearchService {
             });
             
             if(counter < 20){
-              console.log('done');
+              //console.log('done');
             } else {
               noPath = true;
             }

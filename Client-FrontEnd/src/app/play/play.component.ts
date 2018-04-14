@@ -32,6 +32,10 @@ export class PlayComponent implements OnInit {
         });
       }
 
+      this.socket.on('already a character with this name', function(){
+        console.log('duplicate');
+      });
+
       this.socket.on('checkSignIn', function(data){
         ctrl.signedIn = data.isChar;
         ctrl.characterName = data.name;
@@ -53,6 +57,7 @@ export class PlayComponent implements OnInit {
         ctrl.signInService.character.inventory = data.inventory;
         ctrl.signInService.character.clumsiness = data.clumsiness;
         ctrl.signInService.character.maxHealth = data.maxHealth;
+        ctrl.signInService.character.hiding = data.hiding;
 
         console.log(ctrl.signInService.character);
 

@@ -10,7 +10,6 @@ import { CurrentRoomService } from '../../../current-room.service';
 })
 export class GameDetailsComponent implements OnInit {
   connectionCount;
-  playerList;
 
   @Input() socket;
   @Input() characterName;
@@ -48,13 +47,11 @@ export class GameDetailsComponent implements OnInit {
     this.showVisiblePlayers = false;
 
     this.socket.on('player list', function(list){
-      ctrl.playerList = list;
-      ctrl.playerListService.playerList = list;
-      ctrl.playerCount = ctrl.playerListService.playerList.length;
+      ctrl.playerListService.setLists(list);
     });
 
     this.socket.on('set up player list', function(list){
-      ctrl.playerListService.playerList = list;
+      ctrl.playerListService.setLists(list);
     });
 
     this.socket.on('the room', function(room){

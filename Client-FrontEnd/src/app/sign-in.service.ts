@@ -23,7 +23,8 @@ export class SignInService {
     inventory: [],
     clumsiness: null,
     visiblePlayers: [],
-    maxHealth: null
+    maxHealth: null,
+    hiding: null
   }
 
 

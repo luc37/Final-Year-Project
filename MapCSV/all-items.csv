@@ -1,0 +1,25 @@
+id,name,singular,plural,type,containerSingular,containerPlural,hideWord
+0,Chest of drawers,drawers,drawers,Search,chest of,chest of,
+1,Table,table,tables,Search&Hide,,,under
+2,Lamp,lamp,lamps,TurnOn,,,
+3,Torch,torch,torches,TurnOn&PickUp,,,
+4,Radio,radio,radios,TurnOn&PickUp,,,
+5,Tub of garlic,garlic clove,garlic cloves,Eat,tub of,tubs of,
+6,Pile of plates,plates,plates,KnockOver,pile of,piles of,
+7,Pile of pots,pot,pots,KnockOver,pile of,piles of,
+8,Shelf of glass bottles,glass bottle, of glass bottles,KnockOver,shelf of,shelves of,
+9,Vase,vase,vases,KnockOver,,,
+10,Chest,chest,chests,Search,,,
+11,Box,box,boxes,Search,,,
+12,Cupboard,cupboard,cupboards,Search,,,
+13,Wardrobe,wardrobe,wardrobes,Search&Hide,,,in
+14,Bed,bed,beds,Hide,,,under
+15,Tub of onions,onion,onions,Eat,tub of,tubs of,
+16,Shelf of food,food,food,Eat,shelf of,shelves of,
+17,Cabinet,cabinet,cabinets,Search&Hide,,,in
+18,Statue,statue,statues,Hide,,,behind
+19,Crate,crate,crates,Search&Hide,,,behind
+20,Cart,cart,carts,Hide,,,under
+21,Hat stand,hat stand,hat stands,Hide,,,behind
+22,Desk,desk,desks,Search&Hide,,,under
+23,Bomb,bomb,bombs,PickUp,,,

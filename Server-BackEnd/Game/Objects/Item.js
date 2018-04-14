@@ -1,5 +1,5 @@
 const item = {
-    build: function(item, allItem){
+    build: function(item, allItem, visible){
         this.id = item.id;
         this.roomId = item.roomId;
         this.name = allItem.name;
@@ -11,6 +11,8 @@ const item = {
         this.flavourText = item.flavourText;
         this.containerSingular = allItem.containerSingular;
         this.containerPlural = allItem.containerPlural;
+        this.hideWord = allItem.hideWord;
+        this.visible = visible;
     },
     buildActivationStrings: function(activationStrings){
         this.activationStrings = activationStrings;
@@ -26,7 +28,9 @@ const item = {
     turnOnStatus: '',
     flavourText: '',
     containerSingular: '',
-    containerPlural: ''
+    containerPlural: '',
+    hideWord: '',
+    visible: true
 }
 
 module.exports = item;

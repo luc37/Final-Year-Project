@@ -16,6 +16,9 @@ export class GameInterfaceComponent implements OnInit {
   itemPickedUp = 0;
   droppedItem = 0;
   turnOnItem = 0;
+  hideItem = 0;
+  foundBomb = false;
+  detonateItem = 0;
 
   @Input() socket;
   @Input() characterName;
@@ -43,19 +46,32 @@ export class GameInterfaceComponent implements OnInit {
     this.recieveText();
     this.buildRoom();
 
+    this.socket.on('you died', function(d){
+      ctrl.displayText(d.deadText);
+      ctrl.signInService.character = d.character;
+    });
+
+    this.socket.on('game won', function(winText){
+      ctrl.displayText(winText);
+    });
+
+    this.socket.on('explosion', function(){
+      ctrl.socket.emit('move to room', {character:ctrl.signInService.character});
+    });
+
     this.socket.on('update actions', function(actions){
       ctrl.actionsList = actions;
 
       ctrl.actionsList.forEach(function(action){
         ctrl.signInService.character.visiblePlayers.forEach(function(character){
-          console.log(action);
+          //console.log(action);
           if(action.instigator === character.name && action.instigator !== ctrl.signInService.character.name){
             if(action.target === ctrl.signInService.character.name){
-              ctrl.displayText( action.instigator + ' is ' + action.text + 'you');
+              ctrl.updateActionText( ctrl, action.instigator, action.instigator  + ' is ' +  action.text + 'you');
             } else if(action.command.status === ''){
-              ctrl.displayText( action.instigator + ' is ' + action.text + action.target);
+              ctrl.updateActionText( ctrl, action.instigator, action.instigator  + ' is ' +  action.text + action.target);
             } else if(action.command.status !== 0){
-              ctrl.displayText( action.instigator + ' is ' + action.text + action.command.status);
+              ctrl.updateActionText( ctrl, action.instigator, action.instigator  + ' is ' +  action.text + action.command.status);
             }
           }
         });
@@ -75,7 +91,7 @@ export class GameInterfaceComponent implements OnInit {
         }
       });
 
-      ctrl.playerListService.playerList.forEach(function(character){
+      ctrl.playerListService.allCharactersList.forEach(function(character){
         if(action.instigator === character.name && action.instigator !== ctrl.signInService.character.name){
           if(action.target === ctrl.signInService.character.name){
             if(action.command.name === 'Shoot'){
@@ -96,7 +112,15 @@ export class GameInterfaceComponent implements OnInit {
           ctrl.signInService.character.smell = character.smell;
         }
       });
-      ctrl.playerListService.playerList = playerList;
+      ctrl.playerListService.setLists(playerList);
+    });
+
+    ctrl.socket.on('bomb going off', function(timer){
+      ctrl.updateActionText(ctrl, 'bomb',  'bomb going off in : ' + timer);
+    });
+
+    ctrl.socket.on('bomb exploded', function(){
+      ctrl.updateActionText(ctrl, 'bomb',  'bomb exploded');
     });
 
     ctrl.socket.on('update inventory', function(inventory){
@@ -209,8 +233,7 @@ export class GameInterfaceComponent implements OnInit {
               } else{
                 ctrl.displayText('There is no light switch here');
               }
-              
-
+    
             } else if(false){
               //another command
             } else if(false){
@@ -242,10 +265,8 @@ export class GameInterfaceComponent implements OnInit {
                 }
               } else if(command.name ==='Hide'){
                 if(j < 1){
-                  invalid = false; j++;
-                  ctrl.command = command;
-                  ctrl.excutingCommand = true;
-                  console.log('hide');
+                  j++;
+                  invalid = ctrl.checkItemIsInRoom(ctrl, command, 'Hide'); 
                 }
               } else if(command.name ==='Turn on'){
                 if(j < 1){
@@ -280,7 +301,19 @@ export class GameInterfaceComponent implements OnInit {
                 }
               } else if(command.name ==='Eat'){
                 if(j < 1){
+                  j++;
                   invalid = ctrl.checkItemIsInRoom(ctrl, command, 'Eat');
+                }
+              } else if(command.name ==='Detonate'){
+                if(j < 1){
+                  j++;
+                  invalid = ctrl.checkItemIsInInventory(ctrl, command, 'PickUp');
+                  if(invalid){
+                    invalid = ctrl.checkItemIsInRoom(ctrl, command, 'PickUp');
+                    if(invalid){
+                      ctrl.displayText('bomb has been destroyed');
+                    }
+                  }
                 }
               }
             }
@@ -329,6 +362,10 @@ export class GameInterfaceComponent implements OnInit {
 
         if(ctrl.command.status === undefined){
           ctrl.command.status = '';
+        }
+
+        if(ctrl.command.name !== 'Hide' && ctrl.signInService.character.hiding === true){
+          ctrl.socket.emit('check hiding', {command: ctrl.command, character: ctrl.signInService.character});
         }
 
         if(ctrl.command.executingTime > 0){
@@ -384,8 +421,20 @@ export class GameInterfaceComponent implements OnInit {
             }
             ctrl.signInService.character.smell = ctrl.signInService.character.smell + 2;
           } else if(ctrl.command.name === 'Search'){
-            ctrl.displayText('Found a bullet.');
-            ctrl.signInService.character.bullets = ctrl.signInService.character.bullets + 1;
+              ctrl.foundBomb = false;
+            ctrl.currentRoomService.room.objects.forEach(o => {
+              if(o.name === 'Bomb'){
+                ctrl.foundBomb = true;
+              }
+            });
+            if(ctrl.foundBomb){
+              ctrl.displayText('Revealed the bomb.');
+            } else{
+              ctrl.displayText('Found a bullet.');
+              ctrl.signInService.character.bullets = ctrl.signInService.character.bullets + 1;
+            }
+          } else if(ctrl.command.name === 'Hide'){
+            ctrl.signInService.character.hiding = true;
           }
           
           ctrl.socket.emit(ctrl.command.socketCall, { character: ctrl.signInService.character, 
@@ -393,7 +442,10 @@ export class GameInterfaceComponent implements OnInit {
                                                       roomList: ctrl.playerListService.playersInRoomList,
                                                       itemPickedUp: ctrl.itemPickedUp,
                                                       itemDropped: ctrl.droppedItem,
-                                                      itemTurnedOn: ctrl.turnOnItem});
+                                                      itemTurnedOn: ctrl.turnOnItem,
+                                                      hideItem: ctrl.hideItem,
+                                                      foundBomb: ctrl.foundBomb,
+                                                      detonateItem: ctrl.detonateItem});
           
           let object = {
             id: ctrl.signInService.character.id,
@@ -437,35 +489,39 @@ export class GameInterfaceComponent implements OnInit {
         let nameSet = [];
 
         room.objects.forEach(object => {
-          names.push(object.name);
-          let oName = object.name;
-          let i = 0;
 
-          names.forEach(function(name){
-            if(oName === name){
-              i++;
-            }
-          });
-
-          if(i > 1){
-            if(object.containerPlural === ''){
-              strings.push('There are ' + i + ' '+ object.plural);
+          if(object.visible === true){
+            names.push(object.name);
+            let oName = object.name;
+            let i = 0;
+  
+            names.forEach(function(name){
+              if(oName === name){
+                i++;
+              }
+            });
+  
+            if(i > 1){
+              if(object.containerPlural === ''){
+                strings.push('There are ' + i + ' '+ object.plural);
+              } else {
+                strings.push('There are ' + i + ' ' + object.containerPlural + ' ' + object.plural);
+              }
             } else {
-              strings.push('There are ' + i + ' ' + object.containerPlural + ' ' + object.plural);
+              let gap = '';
+              if(object.flavourText !== ''){
+                gap = ' ';
+              }
+              if(object.containerSingular === ''){
+                strings.push('There is a ' + object.flavourText + gap + object.singular);
+              } else {
+                strings.push('There is a ' + object.flavourText + gap + object.containerSingular + ' ' + object.plural);
+              }
+              
+              nameSet.push(object.name);
             }
-          } else {
-            let gap = '';
-            if(object.flavourText !== ''){
-              gap = ' ';
-            }
-            if(object.containerSingular === ''){
-              strings.push('There is a ' + object.flavourText + gap + object.singular);
-            } else {
-              strings.push('There is a ' + object.flavourText + gap + object.containerSingular + ' ' + object.plural);
-            }
-            
-            nameSet.push(object.name);
           }
+          
         });
 
         nameSet.forEach(function(name, p){
@@ -518,17 +574,26 @@ export class GameInterfaceComponent implements OnInit {
 
   updateActionText(ctrl, character, text): void{
     
-    let lines = this.textArea.split('\n');
-    let i = 0;
+    let lines = ctrl.textArea.split('\n');
+    let j = 0;
+    let inArea = false;
 
-    lines.forEach(function(line){
+    lines.forEach(function(line,i){
       if(line.startsWith(character)){
-        if(i === 0){
-          ctrl.textArea = ctrl.textArea.replace(line, text);
+        if(j === 0){
+          if(i < 6){
+            ctrl.textArea = ctrl.textArea.replace(line, text);
+            inArea = true;
+          }
         }
-        i++;
+        j++;
       }
     });
+
+    if(inArea === false){
+      ctrl.displayText(text);
+    }
+    
   }
 
   checkItemIsInRoom(ctrl, command, type): any{          
@@ -540,9 +605,17 @@ export class GameInterfaceComponent implements OnInit {
         ctrl.excutingCommand = true;
         ctrl.command.target = 'a ' + item.singular;
         if(type.includes('PickUp')){
-          ctrl.itemPickedUp = item;
+          if(command.name === 'Detonate'){
+            ctrl.detonateItem = item;
+          } else{
+            ctrl.itemPickedUp = item;
+          }
         } else if(type.includes('TurnOn')){
           ctrl.turnOnItem = item;
+        } else if(type.includes('Hide')){
+          ctrl.hideItem = item;
+          ctrl.command.target =  item.hideWord + ' a ' + item.singular;
+          ctrl.command.status = '';
         }
       } else if(ctrl.inputText.endsWith(item.plural)){
         invalid = false;
@@ -564,7 +637,11 @@ export class GameInterfaceComponent implements OnInit {
         ctrl.excutingCommand = true;
         ctrl.command.target = 'a ' + item.singular;
         if(type.includes('PickUp')){
-          ctrl.droppedItem = item;
+          if(command.name === 'Detonate'){
+            ctrl.detonateItem = item;
+          } else{
+            ctrl.droppedItem = item;
+          }
         } else if(type.includes('TurnOn')){
           ctrl.turnOnItem = item;
         }

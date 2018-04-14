@@ -11,6 +11,7 @@ const turnOffCommand = require('./TurnOff');
 const pickUpCommand = require('./PickUp');
 const dropCommand = require('./Drop');
 const eatCommand = require('./Eat');
+const detonateCommand = require('./Detonate');
 
 const commandList = {
     build: function(list){
@@ -18,69 +19,76 @@ const commandList = {
     },
     getList: function(){
         let theList = [];
+        let sneakSpeed = 8;
+        let walkSpeed = 4;
+        let runSpeed = 2;
+
+        let sneakNoise = 0;
+        let walkNoise = 2;
+        let runNoise = 4;
 
         let walkNorth = Object.create(walkCommand);
         MoveCommandBuilder('North', 'north', 'N', 'n', walkNorth, 'Walk ', 'walk ', 'walking ', 'walked ', 
-        'move to room', 2, 2, false, null, null, 4);   
+        'move to room', walkSpeed, walkSpeed, false, null, null, walkNoise);   
         walkNorth.activationStrings.push('n');
         theList.push(walkNorth);
 
         let walkEast = Object.create(walkCommand);
         MoveCommandBuilder('East', 'east', 'E', 'e', walkEast, 'Walk ', 'walk ', 'walking ', 'walked ', 
-        'move to room', 2, 2, false, null, null, 4);    
+        'move to room', walkSpeed, walkSpeed, false, null, null, walkNoise);    
         walkEast.activationStrings.push('e');
         theList.push(walkEast);
 
         let walkSouth = Object.create(walkCommand);
         MoveCommandBuilder('South', 'south', 'S', 's', walkSouth, 'Walk ', 'walk ', 'walking ', 'walked ', 
-        'move to room', 2, 2, false, null, null, 4);    
+        'move to room', walkSpeed, walkSpeed, false, null, null, walkNoise);    
         walkSouth.activationStrings.push('s');
         theList.push(walkSouth);
 
         let walkWest = Object.create(walkCommand);
         MoveCommandBuilder('West', 'west', 'W', 'w', walkWest, 'Walk ', 'walk ', 'walking ', 'walked ', 
-        'move to room', 2, 2, false, null, null, 4);    
+        'move to room', walkSpeed, walkSpeed, false, null, null, walkNoise);    
         walkWest.activationStrings.push('w');
         theList.push(walkWest);
 
         let runNorth = Object.create(runCommand);
         MoveCommandBuilder('North', 'north', 'N', 'n', runNorth, 'Run ', 'run ', 'running ', 'ran ', 
-        'move to room', 1, 1, true, ['rn'], null, 8);    
+        'move to room', runSpeed, runSpeed, true, ['rn'], null, runNoise);    
         theList.push(runNorth);
 
         let runEast = Object.create(runCommand);
         MoveCommandBuilder('East', 'east', 'E', 'e', runEast, 'Run ', 'run ', 'running ', 'ran ', 
-        'move to room', 1, 1, true, ['re'], null, 8);    
+        'move to room', runSpeed, runSpeed, true, ['re'], null, runNoise);    
         theList.push(runEast);
 
         let runSouth = Object.create(runCommand);
         MoveCommandBuilder('South', 'south', 'S', 's', runSouth, 'Run ', 'run ', 'running ', 'ran ', 
-        'move to room', 1, 1, true, ['rs'],  null, 8);    
+        'move to room', runSpeed, runSpeed, true, ['rs'],  null, runNoise);    
         theList.push(runSouth);
 
         let runWest = Object.create(runCommand);
         MoveCommandBuilder('West', 'west', 'W', 'w', runWest, 'Run ', 'run ', 'running ', 'ran ', 
-        'move to room', 1, 1, true, ['rw'],  null, 8);    
+        'move to room', runSpeed, runSpeed, true, ['rw'],  null, runNoise);    
         theList.push(runWest);
         
         let sneakNorth = Object.create(sneakCommand);
         MoveCommandBuilder('North', 'north', 'N', 'n', sneakNorth, 'Sneak ', 'sneak ', 'sneaking ', 'sneaked ', 
-        'move to room', 4, 4, true, ["sn"], null, 2);                
+        'move to room', sneakSpeed, sneakSpeed, true, ["sn"], null, sneakNoise);                
         theList.push(sneakNorth);
 
         let sneakEast = Object.create(sneakCommand);
         MoveCommandBuilder('East', 'east', 'E', 'e', sneakEast, 'Sneak ', 'sneak ', 'sneaking ', 'sneaked ', 
-        'move to room', 4, 4, true, ["se"],  null, 2);                   
+        'move to room', sneakSpeed, sneakSpeed, true, ["se"],  null, sneakNoise);                   
         theList.push(sneakEast);
 
         let sneakSouth = Object.create(sneakCommand);
         MoveCommandBuilder('South', 'south', 'S', 's', sneakSouth, 'Sneak ', 'sneak ', 'sneaking ', 'sneaked ', 
-        'move to room', 4, 4, true, ["ss"],  null, 2);                  
+        'move to room', sneakSpeed, sneakSpeed, true, ["ss"],  null, sneakNoise);                  
         theList.push(sneakSouth);
 
         let sneakWest = Object.create(sneakCommand);
         MoveCommandBuilder('West', 'west', 'W', 'w', sneakWest, 'Sneak ', 'sneak ', 'sneaking ', 'sneaked ', 
-        'move to room', 4, 4, true, ["sw"],  null, 2);                  
+        'move to room', sneakSpeed, sneakSpeed, true, ["sw"],  null, sneakNoise);                  
         theList.push(sneakWest);
 
         let lookNorth = Object.create(command);
@@ -168,6 +176,14 @@ const commandList = {
                     3, null, 1);
         eat.setTarget(0);
         theList.push(eat);
+
+        let detonate = Object.create(detonateCommand);
+        detonate.build(['detonate ', 'detonate the ', 'detonate my ', 'Detonate the ',  'Detonate my ', 'Detonate ',
+                  'detonate a ', 'detonate an ', 'Detonate a ', 'Detonate an '],
+                    'Detonate bomb', 'Detonate', 3, 'detonating ', 'detonated ', 'detonate bomb',
+                    3, null, 1);
+        detonate.setTarget(0);
+        theList.push(detonate);
 
         return theList;
     },
