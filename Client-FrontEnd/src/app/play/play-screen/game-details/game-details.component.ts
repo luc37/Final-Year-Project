@@ -27,9 +27,9 @@ export class GameDetailsComponent implements OnInit {
   showRoom2;
   showVisiblePlayers2;
 
-  constructor(private signInService:SignInService, 
-              private playerListService:PlayerListService,
-              private currentRoomService:CurrentRoomService) { }
+  constructor(public signInService:SignInService, 
+              public playerListService:PlayerListService,
+              public currentRoomService:CurrentRoomService) { }
 
   ngOnInit() {
     const ctrl = this;

@@ -29,7 +29,7 @@ export class GameInterfaceComponent implements OnInit {
   showStats2;
   showGameInfo2;
 
-  constructor(private signInService:SignInService, 
+  constructor(public signInService:SignInService, 
               private currentRoomService:CurrentRoomService, 
               private playerListService:PlayerListService){}
 
