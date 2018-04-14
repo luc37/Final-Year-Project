@@ -17,8 +17,8 @@ export class PlayComponent implements OnInit {
 
   ngOnInit(): void {
     if(!this.signedIn){
-      //this.socket = socketIo('http://139.59.179.135:3000');
-      this.socket = socketIo('http://localhost:3000');
+      this.socket = socketIo('http://139.59.179.135:3000');
+      //this.socket = socketIo('http://localhost:3000');
       const ctrl = this;
 
       if(this.signInService.character.name != null){
