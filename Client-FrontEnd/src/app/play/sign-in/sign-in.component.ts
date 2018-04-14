@@ -7,8 +7,8 @@ import { CreateCharacterComponent } from './create-character/create-character.co
   styleUrls: ['./sign-in.component.less']
 })
 export class SignInComponent implements OnInit {
-  @Input() characterName = 'John';
-  @Input() password = 'password111';
+  @Input() characterName = '';
+  @Input() password = '';
   
   @Output() playFunction = new EventEmitter<any>();
   @Output() createCharacterFunction = new EventEmitter<any>();
