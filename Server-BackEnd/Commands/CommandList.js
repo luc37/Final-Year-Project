@@ -185,6 +185,12 @@ const commandList = {
         detonate.setTarget(0);
         theList.push(detonate);
 
+        let resetGame = Object.create(command);
+        resetGame.build(['reset game admin'],
+                    'Reset game', 'Reset Game', 3, 'reseting game ', 'reset game ', 'reset game',
+                    3, null, 1);
+        theList.push(resetGame);
+
         return theList;
     },
     list:[]

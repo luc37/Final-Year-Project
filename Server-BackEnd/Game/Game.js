@@ -23,6 +23,10 @@ const game = {
         let theMap = Object.create(map);
         theMap.build(theGame, mapWidth, mapHeight, false);
 
+        socket.on('reset game', function(){
+            ctrl.resetGame(theGame, theGame.io);
+        });
+
         socket.on('colour ui map', function(){
             io.sockets.emit('colour ui map', theGame.gameMap);
         });

@@ -234,8 +234,10 @@ export class GameInterfaceComponent implements OnInit {
                 ctrl.displayText('There is no light switch here');
               }
     
-            } else if(false){
-              //another command
+            } else if(command.name === 'Reset Game'){
+              invalid = false;
+              ctrl.command = command;
+              ctrl.excutingCommand = true;
             } else if(false){
               //another command
             }
