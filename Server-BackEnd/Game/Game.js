@@ -359,6 +359,8 @@ const game = {
 		let theMap = Object.create(map);
         theMap.build(theGame, mapWidth, mapHeight, true);
 
+        theGame.outlawsList = [];
+
 		theGame.setUpOutlaws(5);
         theGame.setUpOverlord();
 
